@@ -60,18 +60,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _onSave() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _loading = true);
-
-    // await PrefsService.saveProfile(
-    //   name: _nameController.text.trim(),
-    //   email: _emailController.text.trim(),
-    //   cohort: _cohortController.text.trim(),
-    //   mission: _missionController.text.trim(),
-    //   interests: _interests,
-    // );
-
     if (!mounted) return;
     setState(() => _loading = false);
-    Navigator.pop(context);
+    Navigator.pop(context, {
+      'name': _nameController.text.trim(),
+      'email': _emailController.text.trim(),
+      'cohort': _cohortController.text.trim(),
+      'mission': _missionController.text.trim(),
+      'interests': List<String>.from(_interests),
+    });
   }
 
   @override

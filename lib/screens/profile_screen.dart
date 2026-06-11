@@ -21,7 +21,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   Map<String, dynamic> _profile = {};
-  String _role = '';
+  final String _role = '';
 
   @override
   void initState() {
@@ -35,20 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     };
   }
 
-  void _onEdit() async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => EditProfileScreen(profile: _profile)),
-    );
-  }
-
-  void _onLogout() async {
-    if (!mounted) return;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const SplashScreen()),
-    );
-  }
 
 
   @override
@@ -92,15 +78,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 12),
                   Text(name, style: AppTypography.headlineMedium.copyWith(color: AppColors.textPrimary)),
                   Text(email, style: AppTypography.bodyMedium.copyWith(color: AppColors.textMuted)),
-                  const SizedBox(height: AppSpacing.sm),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.radiusMd, vertical: AppSpacing.xs),
-                    decoration: BoxDecoration(
-                      color: AppColors.accent.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+                  if (_role.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.radiusMd, vertical: AppSpacing.xs),
+                      decoration: BoxDecoration(
+                        color: AppColors.accent.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+                      ),
+                      child: Text(_role, style: AppTypography.bodyMedium.copyWith(color: AppColors.accent)),
                     ),
-                    child: Text(_role, style: AppTypography.bodyMedium.copyWith(color: AppColors.accent)),
-                  ),
+                  ],
                 ],
               ),
             ),
@@ -129,7 +117,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: AppSpacing.xl),
             ElevatedButton(
               onPressed: () async {
-                await Navigator.push(context, MaterialPageRoute(builder: (_) => EditProfileScreen(profile: _profile)));
+                final updated = await Navigator.push<Map<String, dynamic>>(
+                  context,
+                  MaterialPageRoute(builder: (_) => EditProfileScreen(profile: _profile)),
+                );
+                if (updated != null) setState(() => _profile = updated);
               },
               child: const Text('Edit Profile'),
             ),
