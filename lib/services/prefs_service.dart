@@ -1,36 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsService {
-  static const _keyOnboardingDone = 'onboarding_done';
-  static const _keyRole = 'role';
-  static const _keyName = 'name';
-  static const _keyEmail = 'email';
-  static const _keyCohort = 'cohort';
-  static const _keyMission = 'mission';
-  static const _keyInterests = 'interests';
+  static Future<SharedPreferences> get _p async => SharedPreferences.getInstance();
 
-  static Future<SharedPreferences> get _prefs async =>
-      await SharedPreferences.getInstance();
+  static Future<void> setOnboardingDone() async => (await _p).setBool('onboarding_done', true);
+  static Future<bool> isOnboardingDone() async => (await _p).getBool('onboarding_done') ?? false;
 
-  static Future<void> setOnboardingDone() async {
-    final p = await _prefs;
-    await p.setBool(_keyOnboardingDone, true);
-  }
-
-  static Future<bool> isOnboardingDone() async {
-    final p = await _prefs;
-    return p.getBool(_keyOnboardingDone) ?? false;
-  }
-
-  static Future<void> saveRole(String role) async {
-    final p = await _prefs;
-    await p.setString(_keyRole, role);
-  }
-
-  static Future<String?> getRole() async {
-    final p = await _prefs;
-    return p.getString(_keyRole);
-  }
+  static Future<void> saveRole(String role) async => (await _p).setString('role', role);
+  static Future<String?> getRole() async => (await _p).getString('role');
 
   static Future<void> saveProfile({
     required String name,
@@ -39,33 +16,25 @@ class PrefsService {
     required String mission,
     required List<String> interests,
   }) async {
-    final p = await _prefs;
-    await p.setString(_keyName, name);
-    await p.setString(_keyEmail, email);
-    await p.setString(_keyCohort, cohort);
-    await p.setString(_keyMission, mission);
-    await p.setStringList(_keyInterests, interests);
+    final p = await _p;
+    p.setString('name', name);
+    p.setString('email', email);
+    p.setString('cohort', cohort);
+    p.setString('mission', mission);
+    p.setStringList('interests', interests);
   }
 
   static Future<Map<String, dynamic>> getProfile() async {
-    final p = await _prefs;
+    final p = await _p;
     return {
-      'name': p.getString(_keyName) ?? '',
-      'email': p.getString(_keyEmail) ?? '',
-      'cohort': p.getString(_keyCohort) ?? '',
-      'mission': p.getString(_keyMission) ?? '',
-      'interests': p.getStringList(_keyInterests) ?? [],
+      'name': p.getString('name') ?? '',
+      'email': p.getString('email') ?? '',
+      'cohort': p.getString('cohort') ?? '',
+      'mission': p.getString('mission') ?? '',
+      'interests': p.getStringList('interests') ?? [],
     };
   }
 
-  static Future<bool> isLoggedIn() async {
-    final p = await _prefs;
-    final name = p.getString(_keyName) ?? '';
-    return name.isNotEmpty;
-  }
-
-  static Future<void> clearAll() async {
-    final p = await _prefs;
-    await p.clear();
-  }
+  static Future<bool> isLoggedIn() async => ((await _p).getString('name') ?? '').isNotEmpty;
+  static Future<void> clearAll() async => (await _p).clear();
 }
