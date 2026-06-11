@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'post.dart';
 import 'post_store.dart';
@@ -18,6 +18,7 @@ class _PostFormState extends State<PostForm> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _applyLinkController = TextEditingController();
   XFile? _coverImage;
+  Uint8List? _coverImageBytes;
   DateTime? _selectedDate;
   String _selectedLocation = 'Kigali Campus';
   String? _selectedCategory;
@@ -33,6 +34,7 @@ class _PostFormState extends State<PostForm> {
     'Social': Color(0xFFFF4444),
     'Sports': Color(0xFF44DD88),
     'Tech': Color(0xFF4499FF),
+    'Entrepreneurship': Color(0xFF9B59B6),
   };
 
   @override
@@ -55,20 +57,22 @@ class _PostFormState extends State<PostForm> {
             final image =
                 await picker.pickImage(source: ImageSource.gallery);
             if (image != null) {
+              final bytes = await image.readAsBytes();
               setState(() {
                 _coverImage = image;
+                _coverImageBytes = bytes;
               });
             }
           },
           child: Container(
             width: double.infinity,
             height: 150,
+            clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white12, width: 1.5),
               borderRadius: BorderRadius.circular(12),
             ),
-            clipBehavior: Clip.hardEdge,
-            child: _coverImage == null
+            child: _coverImageBytes == null
                 ? const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -81,11 +85,13 @@ class _PostFormState extends State<PostForm> {
                     ],
                   )
                 : Stack(
-                    fit: StackFit.expand,
                     children: [
-                      Image.file(
-                        File(_coverImage!.path),
-                        fit: BoxFit.cover,
+                      Positioned.fill(
+                        child: Image.memory(
+                          _coverImageBytes!,
+                          fit: BoxFit.cover,
+                          gaplessPlayback: true,
+                        ),
                       ),
                       Positioned(
                         bottom: 8,
@@ -266,12 +272,28 @@ class _PostFormState extends State<PostForm> {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              if (_titleController.text.trim().isEmpty) {
+              final missing = <String>[];
+              if (_titleController.text.trim().isEmpty) missing.add('title');
+              if (_descriptionController.text.trim().isEmpty) missing.add('description');
+              if (_selectedDate == null) {
+                missing.add(widget.type == 'Event'
+                    ? 'date & time'
+                    : 'application deadline');
+              }
+              if (_selectedCategory == null) missing.add('category');
+
+              if (missing.isNotEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Please add a title')),
+                  SnackBar(
+                    content: Text(
+                      'Please fill in: ${missing.join(', ')}',
+                    ),
+                    backgroundColor: const Color(0xFFFF4444),
+                  ),
                 );
                 return;
               }
+
               PostStore.add(Post(
                 id: DateTime.now().millisecondsSinceEpoch.toString(),
                 type: widget.type,
@@ -284,6 +306,7 @@ class _PostFormState extends State<PostForm> {
                     : '',
                 category: _selectedCategory ?? '',
                 imagePath: _coverImage?.path ?? '',
+                imageBytes: _coverImageBytes,
               ));
               Navigator.pop(context);
             },
