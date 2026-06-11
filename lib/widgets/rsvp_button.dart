@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 
 class RSVPButton extends StatelessWidget {
   final String label;
@@ -20,15 +21,14 @@ class RSVPButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
-          backgroundColor: isPrimary
-              ? const Color(0xFFF5A623)
-              : const Color(0xFF2A2E45),
-          foregroundColor: isPrimary ? Colors.black : Colors.white,
+          backgroundColor:
+              isPrimary ? AppColors.orange : AppColors.surfaceAlt,
+          foregroundColor: isPrimary ? Colors.black : AppColors.textPrimary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
         ),
-        child: Text(label),
+        child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
     );
   }

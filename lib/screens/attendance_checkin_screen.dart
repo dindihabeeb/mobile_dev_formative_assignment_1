@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../mock_data/mock_data.dart';
+import 'package:provider/provider.dart';
+import '../store/event_store.dart';
+import '../theme/app_colors.dart';
 
 class AttendanceCheckInScreen extends StatefulWidget {
   const AttendanceCheckInScreen({super.key});
@@ -9,11 +11,40 @@ class AttendanceCheckInScreen extends StatefulWidget {
       _AttendanceCheckInScreenState();
 }
 
-class _AttendanceCheckInScreenState
-    extends State<AttendanceCheckInScreen> {
+class _AttendanceCheckInScreenState extends State<AttendanceCheckInScreen> {
+  final _codeController = TextEditingController();
+  _MessageState _messageState = const _MessageState.empty();
 
-  final codeController = TextEditingController();
-  String message = "";
+  @override
+  void dispose() {
+    _codeController.dispose();
+    super.dispose();
+  }
+
+  void _handleCheckIn() {
+    final store = context.read<EventStore>();
+    final result = store.checkIn(_codeController.text);
+
+    setState(() {
+      switch (result) {
+        case CheckInResult.success:
+          _messageState = const _MessageState(
+            text: "+50 Points Earned 🎉",
+            color: AppColors.green,
+          );
+        case CheckInResult.alreadyCheckedIn:
+          _messageState = const _MessageState(
+            text: "Already checked in to this event.",
+            color: AppColors.orange,
+          );
+        case CheckInResult.invalid:
+          _messageState = const _MessageState(
+            text: "Invalid code — please try again.",
+            color: Colors.redAccent,
+          );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,70 +58,74 @@ class _AttendanceCheckInScreenState
             style: TextStyle(
               fontSize: 26,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: AppColors.textPrimary,
             ),
           ),
-
+          const SizedBox(height: 8),
+          const Text(
+            "Enter the event code provided at the door.",
+            style: TextStyle(color: AppColors.textSecondary),
+          ),
           const SizedBox(height: 20),
-
           TextField(
-            controller: codeController,
-            style: const TextStyle(color: Colors.white),
+            controller: _codeController,
+            style: const TextStyle(color: AppColors.textPrimary),
+            onChanged: (_) {
+              // Reset message when user starts typing a new code
+              if (_messageState.text.isNotEmpty) {
+                setState(() => _messageState = const _MessageState.empty());
+              }
+            },
             decoration: InputDecoration(
-              hintText: "Enter event code",
-              hintStyle: const TextStyle(color: Colors.grey),
+              hintText: "Event code",
+              hintStyle: const TextStyle(color: AppColors.textSecondary),
               filled: true,
-              fillColor: const Color(0xFF1A1D2E),
+              fillColor: AppColors.surface,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
               ),
             ),
           ),
-
           const SizedBox(height: 12),
-
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF22C55E),
-              minimumSize: const Size(double.infinity, 50),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: _handleCheckIn,
+              child: const Text(
+                "Check In",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
-            onPressed: () {
-              setState(() {
-                final event = events.firstWhere(
-                  (e) => e.id.toString() == codeController.text.trim(),
-                  orElse: () => Event(
-                    id: -1,
-                    title: "",
-                    category: "",
-                    location: "",
-                    capacity: 0,
-                    attendees: 0,
-                  ),
-                );
-
-                if (event.id != -1) {
-                  checkIn(event);
-                  message = "+50 Points Earned 🎉";
-                } else {
-                  message = "Invalid Code";
-                }
-              });
-            },
-            child: const Text("Check In"),
           ),
-
           const SizedBox(height: 20),
-
-          Text(
-            message,
-            style: const TextStyle(
-              color: Colors.amber,
-              fontSize: 16,
+          if (_messageState.text.isNotEmpty)
+            Text(
+              _messageState.text,
+              style: TextStyle(
+                color: _messageState.color,
+                fontSize: 16,
+              ),
             ),
-          ),
         ],
       ),
     );
   }
+}
+
+class _MessageState {
+  final String text;
+  final Color color;
+
+  const _MessageState({required this.text, required this.color});
+  const _MessageState.empty()
+      : text = '',
+        color = Colors.transparent;
 }
