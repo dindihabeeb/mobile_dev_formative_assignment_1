@@ -1,9 +1,9 @@
 # ALU Mobile Dev – Formative Assignment 1                                                                          
                                                                                                                    
   A flutter app that strengthens student engagement and collaboration within the African Leadership University ecosystem.
-
-  [![Watch the demo video](https://www.youtube.com/watch?v=SFvzEreVHmg)](https://www.youtube.com/watch?v=SFvzEreVHmg)
-                                                                                                                     
+ 
+  [![Watch the Demo](https://img.youtube.com/vi/SFvzEreVHmg/0.jpg)](https://youtu.be/SFvzEreVHmg?si=JgUk9FhfwkaCjnpL)
+                                                                                                                      
   ---                                                                                                                
                                                                                                                      
   ## Getting Started                                                                                                 
