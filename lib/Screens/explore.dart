@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../Widgets/post_store.dart';
 import '../Widgets/post.dart';
 import '../Widgets/post_card.dart';
@@ -25,9 +26,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   List<Post> _filtered(List<Post> all) {
     return all.where((post) {
-      final matchesSearch = _searchQuery.isEmpty ||
-          post.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          post.description.toLowerCase().contains(_searchQuery.toLowerCase());
+      final q = _searchQuery.toLowerCase();
+      final matchesSearch = q.isEmpty ||
+          post.title.toLowerCase().contains(q) ||
+          post.description.toLowerCase().contains(q) ||
+          post.type.toLowerCase().contains(q) ||
+          post.category.toLowerCase().contains(q) ||
+          post.location.toLowerCase().contains(q);
 
       final matchesType = _typeFilter == 'All' ||
           (_typeFilter == 'Events' && post.type == 'Event') ||
@@ -150,7 +155,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           ),
                         )
                       : SizedBox(
-                          height: 200,
+                          height: 230,
                           child: PageView.builder(
                             controller:
                                 PageController(viewportFraction: 0.82),
@@ -216,45 +221,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ),
                 ),
 
-                // All on campus label
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 28, 16, 12),
-                    child: Text(
-                      filtered.isEmpty
-                          ? 'All on campus'
-                          : 'All on campus (${filtered.length})',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-
-                // All on campus list
-                filtered.isEmpty
-                    ? const SliverToBoxAdapter(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            'Nothing here yet — be the first to post!',
-                            style: TextStyle(color: Colors.white38),
-                          ),
-                        ),
-                      )
-                    : SliverPadding(
-                        padding:
-                            const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (_, i) =>
-                                _CampusRow(post: filtered[i]),
-                            childCount: filtered.length,
-                          ),
-                        ),
-                      ),
+                // All on campus — grouped by type
+                ..._buildCampusSections(filtered),
 
                 const SliverToBoxAdapter(child: SizedBox(height: 80)),
               ],
@@ -290,10 +258,154 @@ class _ExploreScreenState extends State<ExploreScreen> {
       ),
     );
   }
+
+  List<Widget> _buildCampusSections(List<Post> filtered) {
+    if (filtered.isEmpty) {
+      return [
+        const SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(16, 28, 16, 12),
+            child: Text(
+              'All on campus',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        const SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              'Nothing here yet — be the first to post!',
+              style: TextStyle(color: Colors.white38),
+            ),
+          ),
+        ),
+      ];
+    }
+
+    final events =
+        filtered.where((p) => p.type == 'Event').toList();
+    final opportunities =
+        filtered.where((p) => p.type == 'Opportunity').toList();
+
+    return [
+      // Section title
+      SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 28, 16, 12),
+          child: Text(
+            'All on campus (${filtered.length})',
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+
+      // Events group
+      if (events.isNotEmpty) ...[
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF44DD88).withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                        color: const Color(0xFF44DD88)
+                            .withValues(alpha: 0.4)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.event,
+                          color: Color(0xFF44DD88), size: 12),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Events (${events.length})',
+                        style: const TextStyle(
+                            color: Color(0xFF44DD88),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (_, i) => _CampusRow(post: events[i]),
+              childCount: events.length,
+            ),
+          ),
+        ),
+      ],
+
+      // Opportunities group
+      if (opportunities.isNotEmpty) ...[
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFB800).withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                        color: const Color(0xFFFFB800)
+                            .withValues(alpha: 0.4)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.work_outline,
+                          color: Color(0xFFFFB800), size: 12),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Opportunities (${opportunities.length})',
+                        style: const TextStyle(
+                            color: Color(0xFFFFB800),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (_, i) => _CampusRow(post: opportunities[i]),
+              childCount: opportunities.length,
+            ),
+          ),
+        ),
+      ],
+    ];
+  }
 }
 
-// ── Category card ─────────────────────────────────────────────────────────────
-
+//  Category Card
 class CategoryCard extends StatelessWidget {
   final String name;
   final Color color;
@@ -361,7 +473,7 @@ class _CategoryCard extends CategoryCard {
   });
 }
 
-// ── Campus row ────────────────────────────────────────────────────────────────
+//  Campus row 
 
 class _CampusRow extends StatelessWidget {
   final Post post;
@@ -483,10 +595,39 @@ class _ActionButton extends StatelessWidget {
   final Post post;
   const _ActionButton({required this.post});
 
+  Future<void> _openLink(BuildContext context) async {
+    var raw = post.applyLink.trim();
+    if (raw.isEmpty) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('No apply link provided for this opportunity')),
+        );
+      }
+      return;
+    }
+    if (!raw.startsWith('http://') && !raw.startsWith('https://')) {
+      raw = 'https://$raw';
+    }
+    final uri = Uri.parse(raw);
+    try {
+      await launchUrl(uri, webOnlyWindowName: '_blank');
+    } catch (_) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not open: $raw')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (post.type == 'Opportunity') {
-      return _chip('Apply', const Color(0xFFFFB800), Colors.black);
+      return GestureDetector(
+        onTap: () => _openLink(context),
+        child: _chip('Apply', const Color(0xFFFFB800), Colors.black),
+      );
     }
     if (post.isFinished) {
       return _chip('Finished', Colors.white24, Colors.white54);
@@ -496,8 +637,7 @@ class _ActionButton extends StatelessWidget {
 
   Widget _chip(String label, Color bg, Color fg) {
     return Container(
-      padding:
-          const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(20),
@@ -505,9 +645,7 @@ class _ActionButton extends StatelessWidget {
       child: Text(
         label,
         style: TextStyle(
-            color: fg,
-            fontSize: 12,
-            fontWeight: FontWeight.bold),
+            color: fg, fontSize: 12, fontWeight: FontWeight.bold),
       ),
     );
   }

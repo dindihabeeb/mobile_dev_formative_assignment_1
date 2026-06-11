@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 class Post {
   final String id;
   final String type;
@@ -8,6 +10,7 @@ class Post {
   final String applyLink;
   final String category;
   final String imagePath;
+  final Uint8List? imageBytes;
   final DateTime createdAt;
 
   Post({
@@ -20,6 +23,7 @@ class Post {
     this.applyLink = '',
     this.category = '',
     this.imagePath = '',
+    this.imageBytes,
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
 

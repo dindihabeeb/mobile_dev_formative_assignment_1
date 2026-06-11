@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'post.dart';
@@ -17,6 +17,7 @@ class _PostFormState extends State<PostForm> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _applyLinkController = TextEditingController();
   XFile? _coverImage;
+  Uint8List? _coverImageBytes;
   DateTime? _selectedDate;
   String _selectedLocation = 'Kigali Campus';
   String? _selectedCategory;
@@ -55,20 +56,22 @@ class _PostFormState extends State<PostForm> {
             final image =
                 await picker.pickImage(source: ImageSource.gallery);
             if (image != null) {
+              final bytes = await image.readAsBytes();
               setState(() {
                 _coverImage = image;
+                _coverImageBytes = bytes;
               });
             }
           },
           child: Container(
             width: double.infinity,
             height: 150,
+            clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white12, width: 1.5),
               borderRadius: BorderRadius.circular(12),
             ),
-            clipBehavior: Clip.hardEdge,
-            child: _coverImage == null
+            child: _coverImageBytes == null
                 ? const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -81,11 +84,13 @@ class _PostFormState extends State<PostForm> {
                     ],
                   )
                 : Stack(
-                    fit: StackFit.expand,
                     children: [
-                      Image.file(
-                        File(_coverImage!.path),
-                        fit: BoxFit.cover,
+                      Positioned.fill(
+                        child: Image.memory(
+                          _coverImageBytes!,
+                          fit: BoxFit.cover,
+                          gaplessPlayback: true,
+                        ),
                       ),
                       Positioned(
                         bottom: 8,
@@ -275,10 +280,6 @@ class _PostFormState extends State<PostForm> {
                     : 'application deadline');
               }
               if (_selectedCategory == null) missing.add('category');
-              if (widget.type == 'Opportunity' &&
-                  _applyLinkController.text.trim().isEmpty) {
-                missing.add('apply link');
-              }
 
               if (missing.isNotEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -304,6 +305,7 @@ class _PostFormState extends State<PostForm> {
                     : '',
                 category: _selectedCategory ?? '',
                 imagePath: _coverImage?.path ?? '',
+                imageBytes: _coverImageBytes,
               ));
               Navigator.pop(context);
             },
