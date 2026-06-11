@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../store/event_store.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
 
 class AttendanceCheckInScreen extends StatefulWidget {
   const AttendanceCheckInScreen({super.key});
@@ -28,17 +30,17 @@ class _AttendanceCheckInScreenState extends State<AttendanceCheckInScreen> {
         case CheckInResult.success:
           _messageState = const _MessageState(
             text: "+50 Points Earned 🎉",
-            color: AppColors.green,
+            color: AppColors.success,
           );
         case CheckInResult.alreadyCheckedIn:
           _messageState = const _MessageState(
             text: "Already checked in to this event.",
-            color: AppColors.orange,
+            color: AppColors.primary,
           );
         case CheckInResult.invalid:
           _messageState = const _MessageState(
             text: "Invalid code — please try again.",
-            color: Colors.redAccent,
+            color: AppColors.error,
           );
       }
     });
@@ -47,27 +49,27 @@ class _AttendanceCheckInScreenState extends State<AttendanceCheckInScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             "Check-in",
-            style: TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
-            ),
+            style: AppTypography.headlineLarge,
           ),
-          const SizedBox(height: 8),
-          const Text(
+          const SizedBox(height: AppSpacing.sm),
+          Text(
             "Enter the event code provided at the door.",
-            style: TextStyle(color: AppColors.textSecondary),
+            style: AppTypography.bodyLarge.copyWith(
+              color: AppColors.textSecondary,
+            ),
           ),
           const SizedBox(height: 20),
           TextField(
             controller: _codeController,
-            style: const TextStyle(color: AppColors.textPrimary),
+            style: AppTypography.bodyLarge.copyWith(
+              color: AppColors.textPrimary,
+            ),
             onChanged: (_) {
               // Reset message when user starts typing a new code
               if (_messageState.text.isNotEmpty) {
@@ -76,11 +78,13 @@ class _AttendanceCheckInScreenState extends State<AttendanceCheckInScreen> {
             },
             decoration: InputDecoration(
               hintText: "Event code",
-              hintStyle: const TextStyle(color: AppColors.textSecondary),
+              hintStyle: AppTypography.bodyLarge.copyWith(
+                color: AppColors.textSecondary,
+              ),
               filled: true,
               fillColor: AppColors.surface,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                 borderSide: BorderSide.none,
               ),
             ),
@@ -91,15 +95,15 @@ class _AttendanceCheckInScreenState extends State<AttendanceCheckInScreen> {
             height: 50,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.green,
+                backgroundColor: AppColors.success,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                 ),
               ),
               onPressed: _handleCheckIn,
               child: const Text(
                 "Check In",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: AppTypography.labelLarge,
               ),
             ),
           ),
@@ -107,9 +111,8 @@ class _AttendanceCheckInScreenState extends State<AttendanceCheckInScreen> {
           if (_messageState.text.isNotEmpty)
             Text(
               _messageState.text,
-              style: TextStyle(
+              style: AppTypography.titleLarge.copyWith(
                 color: _messageState.color,
-                fontSize: 16,
               ),
             ),
         ],

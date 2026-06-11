@@ -5,6 +5,7 @@ import '../screens/explore.dart';
 import '../screens/communityPage.dart';
 import '../screens/profile_screen.dart';
 import '../screens/post.dart';
+import '../theme/app_colors.dart';
 
 class AppShell extends StatefulWidget {
   final String name;
@@ -33,13 +34,13 @@ class _AppShellState extends State<AppShell> {
     ];
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0D1B2A),
+      backgroundColor: AppColors.background,
       body: IndexedStack(
         index: _currentIndex,
         children: screens,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFFFFB800),
+        backgroundColor: AppColors.primary,
         onPressed: () {
           Navigator.push(
             context,

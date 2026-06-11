@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../store/event_store.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
 
 class ParticipationDashboardScreen extends StatelessWidget {
   const ParticipationDashboardScreen({super.key});
@@ -13,42 +15,37 @@ class ParticipationDashboardScreen extends StatelessWidget {
         final store = EventStore.instance;
         final attended = store.attendedEvents.length;
         final joined = store.joinedEvents.length;
-        // Explicit double division — avoids integer truncation
         final double rate = joined == 0 ? 0.0 : (attended / joined * 100);
 
         return Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-          const Text(
+          Text(
             "Your Impact",
-            style: TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
-            ),
+            style: AppTypography.headlineLarge.copyWith(color: AppColors.textPrimary),
           ),
           const SizedBox(height: 20),
           _StatCard(
             title: "Events Joined",
             value: joined.toString(),
-            color: AppColors.orange,
+            color: AppColors.primary,
           ),
           _StatCard(
             title: "Events Attended",
             value: attended.toString(),
-            color: AppColors.green,
+            color: AppColors.success,
           ),
           _StatCard(
             title: "Points",
             value: store.participationPoints.toString(),
-            color: AppColors.purple,
+            color: AppColors.accent,
           ),
           const SizedBox(height: 20),
           Text(
             "Attendance Rate: ${rate.toStringAsFixed(1)}%",
-            style: const TextStyle(color: AppColors.textSecondary),
+            style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
           ),
         ],
       ));
@@ -71,21 +68,20 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: AppSpacing.radiusMd),
+      padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: const TextStyle(color: AppColors.textPrimary)),
+          Text(title, style: AppTypography.bodyLarge.copyWith(color: AppColors.textPrimary)),
           Text(
             value,
-            style: TextStyle(
+            style: AppTypography.headlineMedium.copyWith(
               color: color,
-              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),

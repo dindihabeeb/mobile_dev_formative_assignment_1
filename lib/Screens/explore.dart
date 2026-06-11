@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../Widgets/post_store.dart';
 import '../Widgets/post.dart';
 import '../Widgets/post_card.dart';
+import '../theme/app_colors.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -17,11 +18,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
   String _categoryFilter = '';
 
   static const Map<String, Color> _categoryColors = {
-    'Careers': Color(0xFFFFB800),
+    'Careers': AppColors.orange,
     'Social': Color(0xFFFF4444),
-    'Sports': Color(0xFF44DD88),
+    'Sports': AppColors.green,
     'Tech': Color(0xFF4499FF),
-    'Entrepreneurship': Color(0xFF9B59B6),
+    'Entrepreneurship': AppColors.purple,
   };
 
   List<Post> _filtered(List<Post> all) {
@@ -69,11 +70,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
         final trending = _trending(filtered);
 
         return Scaffold(
-          backgroundColor: const Color(0xFF0D1B2A),
+          backgroundColor: AppColors.background,
           body: SafeArea(
             child: CustomScrollView(
               slivers: [
-                // Header + search + filters
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
@@ -83,7 +83,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         const Text(
                           'Explore',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.textPrimary,
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                           ),
@@ -94,15 +94,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         TextField(
                           onChanged: (v) =>
                               setState(() => _searchQuery = v),
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: AppColors.textPrimary),
                           decoration: InputDecoration(
                             hintText: 'Search events, clubs, people...',
                             hintStyle:
-                                const TextStyle(color: Colors.white38),
+                                const TextStyle(color: AppColors.textSecondary),
                             prefixIcon: const Icon(Icons.search,
-                                color: Colors.white38),
+                                color: AppColors.textSecondary),
                             filled: true,
-                            fillColor: const Color(0xFF1A2D3F),
+                            fillColor: AppColors.surface,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide.none,
@@ -130,7 +130,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                             Text(
                               'Trending this week',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: AppColors.textPrimary,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -144,14 +144,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ),
                 ),
 
-                // Trending carousel
                 SliverToBoxAdapter(
                   child: trending.isEmpty
                       ? const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             'No posts this week yet. Publish one!',
-                            style: TextStyle(color: Colors.white38),
+                            style: TextStyle(color: AppColors.textSecondary),
                           ),
                         )
                       : SizedBox(
@@ -169,14 +168,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         ),
                 ),
 
-                // Browse by category label
                 const SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(16, 28, 16, 12),
                     child: Text(
                       'Browse by category',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -184,7 +182,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ),
                 ),
 
-                // 2-column category grid
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   sliver: SliverGrid(
@@ -221,7 +218,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ),
                 ),
 
-                // All on campus — grouped by type
                 ..._buildCampusSections(filtered),
 
                 const SliverToBoxAdapter(child: SizedBox(height: 80)),
@@ -243,14 +239,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
             const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFFFFB800)
-              : const Color(0xFF1A2D3F),
+              ? AppColors.orange
+              : AppColors.surface,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? Colors.black : Colors.white70,
+            color: isSelected ? Colors.black : AppColors.textSecondary,
             fontWeight: FontWeight.bold,
             fontSize: 13,
           ),
@@ -268,7 +264,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             child: Text(
               'All on campus',
               style: TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.bold),
             ),
@@ -279,7 +275,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               'Nothing here yet — be the first to post!',
-              style: TextStyle(color: Colors.white38),
+              style: TextStyle(color: AppColors.textSecondary),
             ),
           ),
         ),
@@ -292,21 +288,19 @@ class _ExploreScreenState extends State<ExploreScreen> {
         filtered.where((p) => p.type == 'Opportunity').toList();
 
     return [
-      // Section title
       SliverToBoxAdapter(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 28, 16, 12),
           child: Text(
             'All on campus (${filtered.length})',
             style: const TextStyle(
-                color: Colors.white,
+                color: AppColors.textPrimary,
                 fontSize: 16,
                 fontWeight: FontWeight.bold),
           ),
         ),
       ),
 
-      // Events group
       if (events.isNotEmpty) ...[
         SliverToBoxAdapter(
           child: Padding(
@@ -317,22 +311,21 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF44DD88).withValues(alpha: 0.15),
+                    color: AppColors.green.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                        color: const Color(0xFF44DD88)
-                            .withValues(alpha: 0.4)),
+                        color: AppColors.green.withValues(alpha: 0.4)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(Icons.event,
-                          color: Color(0xFF44DD88), size: 12),
+                          color: AppColors.green, size: 12),
                       const SizedBox(width: 4),
                       Text(
                         'Events (${events.length})',
                         style: const TextStyle(
-                            color: Color(0xFF44DD88),
+                            color: AppColors.green,
                             fontSize: 12,
                             fontWeight: FontWeight.w600),
                       ),
@@ -354,7 +347,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
         ),
       ],
 
-      // Opportunities group
       if (opportunities.isNotEmpty) ...[
         SliverToBoxAdapter(
           child: Padding(
@@ -365,22 +357,21 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFB800).withValues(alpha: 0.15),
+                    color: AppColors.orange.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                        color: const Color(0xFFFFB800)
-                            .withValues(alpha: 0.4)),
+                        color: AppColors.orange.withValues(alpha: 0.4)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(Icons.work_outline,
-                          color: Color(0xFFFFB800), size: 12),
+                          color: AppColors.orange, size: 12),
                       const SizedBox(width: 4),
                       Text(
                         'Opportunities (${opportunities.length})',
                         style: const TextStyle(
-                            color: Color(0xFFFFB800),
+                            color: AppColors.orange,
                             fontSize: 12,
                             fontWeight: FontWeight.w600),
                       ),
@@ -405,7 +396,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
   }
 }
 
-//  Category Card
 class CategoryCard extends StatelessWidget {
   final String name;
   final Color color;
@@ -429,12 +419,12 @@ class CategoryCard extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             color.withValues(alpha: isSelected ? 0.4 : 0.2),
-            const Color(0xFF0D1B2A),
+            AppColors.background,
           ],
         ),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isSelected ? color : Colors.white12,
+          color: isSelected ? color : AppColors.textSecondary.withValues(alpha: 0.12),
           width: isSelected ? 1.5 : 1,
         ),
       ),
@@ -452,12 +442,12 @@ class CategoryCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(name,
               style: const TextStyle(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontWeight: FontWeight.bold,
                   fontSize: 14)),
           Text('$count this month',
               style: const TextStyle(
-                  color: Colors.white54, fontSize: 11)),
+                  color: AppColors.textSecondary, fontSize: 11)),
         ],
       ),
     );
@@ -473,18 +463,16 @@ class _CategoryCard extends CategoryCard {
   });
 }
 
-//  Campus row 
-
 class _CampusRow extends StatelessWidget {
   final Post post;
   const _CampusRow({required this.post});
 
   static const Map<String, Color> _colors = {
-    'Careers': Color(0xFFFFB800),
+    'Careers': AppColors.orange,
     'Social': Color(0xFFFF4444),
-    'Sports': Color(0xFF44DD88),
+    'Sports': AppColors.green,
     'Tech': Color(0xFF4499FF),
-    'Entrepreneurship': Color(0xFF9B59B6),
+    'Entrepreneurship': AppColors.purple,
   };
 
   static const List<String> _months = [
@@ -494,19 +482,18 @@ class _CampusRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _colors[post.category] ?? const Color(0xFFFFB800);
+    final color = _colors[post.category] ?? AppColors.orange;
     final date = post.date;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A2D3F),
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
         children: [
-          // Date badge
           Container(
             width: 48,
             height: 54,
@@ -544,7 +531,6 @@ class _CampusRow extends StatelessWidget {
 
           const SizedBox(width: 12),
 
-          // Title + location / category
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -552,7 +538,7 @@ class _CampusRow extends StatelessWidget {
                 Text(
                   post.title,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
@@ -563,7 +549,7 @@ class _CampusRow extends StatelessWidget {
                 Row(
                   children: [
                     const Icon(Icons.location_on_outlined,
-                        color: Colors.white54, size: 12),
+                        color: AppColors.textSecondary, size: 12),
                     const SizedBox(width: 2),
                     Expanded(
                       child: Text(
@@ -571,7 +557,7 @@ class _CampusRow extends StatelessWidget {
                             ? post.location
                             : post.category,
                         style: const TextStyle(
-                            color: Colors.white54, fontSize: 12),
+                            color: AppColors.textSecondary, fontSize: 12),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -583,7 +569,6 @@ class _CampusRow extends StatelessWidget {
 
           const SizedBox(width: 8),
 
-          // Going / Apply button
           _ActionButton(post: post),
         ],
       ),
@@ -626,13 +611,13 @@ class _ActionButton extends StatelessWidget {
     if (post.type == 'Opportunity') {
       return GestureDetector(
         onTap: () => _openLink(context),
-        child: _chip('Apply', const Color(0xFFFFB800), Colors.black),
+        child: _chip('Apply', AppColors.orange, Colors.black),
       );
     }
     if (post.isFinished) {
-      return _chip('Finished', Colors.white24, Colors.white54);
+      return _chip('Finished', AppColors.textSecondary.withValues(alpha: 0.24), AppColors.textSecondary);
     }
-    return _chip('✓  Going', const Color(0xFF44DD88), Colors.black);
+    return _chip('✓  Going', AppColors.green, Colors.black);
   }
 
   Widget _chip(String label, Color bg, Color fg) {

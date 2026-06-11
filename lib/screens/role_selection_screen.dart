@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
 import 'login_screen.dart';
 
 class RoleSelectionScreen extends StatefulWidget {
@@ -22,13 +25,13 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
     return GestureDetector(
       onTap: () => setState(() => _selectedRole = role),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
+        margin: const EdgeInsets.only(bottom: AppSpacing.md),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: const Color(0xFF1A1A2E),
-          borderRadius: BorderRadius.circular(16),
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
           border: Border.all(
-            color: selected ? const Color(0xFF6C63FF) : Colors.transparent,
+            color: selected ? AppColors.accent : Colors.transparent,
             width: 2,
           ),
         ),
@@ -39,28 +42,36 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
               height: 52,
               decoration: BoxDecoration(
                 color: selected
-                    ? const Color(0xFF6C63FF).withOpacity(0.15)
-                    : const Color(0xFF0D0D1A),
+                    ? AppColors.accent.withValues(alpha: 0.15)
+                    : AppColors.background,
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(
                 icon,
-                color: selected ? const Color(0xFF6C63FF) : const Color(0xFF9090A0),
+                color: selected ? AppColors.accent : AppColors.textSecondary,
                 size: 28,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(role, style: TextStyle(color: selected ? const Color(0xFF6C63FF) : Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 4),
-                  Text(subtitle, style: const TextStyle(color: Color(0xFF9090A0), fontSize: 13)),
+                  Text(
+                    role,
+                    style: AppTypography.titleLarge.copyWith(
+                      color: selected ? AppColors.accent : AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  Text(
+                    subtitle,
+                    style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
+                  ),
                 ],
               ),
             ),
-            if (selected) const Icon(Icons.check_circle, color: Color(0xFF6C63FF)),
+            if (selected) const Icon(Icons.check_circle, color: AppColors.accent),
           ],
         ),
       ),
@@ -72,14 +83,20 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 40),
-              const Text('Who are you?', style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              const Text('This helps us personalise your experience.', style: TextStyle(color: Color(0xFF9090A0))),
+              Text(
+                'Who are you?',
+                style: AppTypography.headlineLarge.copyWith(color: AppColors.textPrimary),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                'This helps us personalise your experience.',
+                style: AppTypography.bodyLarge.copyWith(color: AppColors.textSecondary),
+              ),
               const SizedBox(height: 40),
               _roleCard('Student', Icons.school_rounded, 'Discover events, join clubs, engage with ALU community.'),
               _roleCard('Authorized Poster', Icons.campaign_rounded, 'Post events, hackathons and announcements.'),

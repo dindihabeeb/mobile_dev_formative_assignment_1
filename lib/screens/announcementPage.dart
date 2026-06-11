@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
-
-const Color _kPageBg = Color(0xFF0B0F1A);
-const Color _kBannerBg = Color(0xFF16182F);
-const Color _kBadgeStart = Color(0xFFA584F8);
-const Color _kBadgeEnd = Color(0xFF7163B4);
-const Color _kBadgeText = Color(0xFF1A1F2E);
-const Color _kJoinedBg = Color(0xFF1A1F2E);
-const Color _kOnlineGreen = Color(0xFF34D399);
-const Color _kCardBg = Color(0xFF121A2C);
-const Color _kAccentOrange = Color(0xFFFCAA1A);
-const Color _kDividerColor = Color(0xFF1F2433);
-const Color _kInputBg = Color(0xFF171C2F);
-const Color _kJKAvatar = Color(0xFF5588E3);
-const Color _kLMAvatar = Color(0xFF9B7FD4);
-const Color _kDAAvatarStart = Color(0xFFE89B5C);
-const Color _kDAAvatarEnd = Color(0xFFB8763E);
-const Color _kAUAvatar = Color(0xFF7B6FB0);
+import 'package:mobile_dev_formative_assignment_1/theme/app_colors.dart';
 
 class Announcementpage extends StatefulWidget {
   const Announcementpage({super.key});
@@ -36,27 +20,27 @@ class _AnnouncementpageState extends State<Announcementpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _kPageBg,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Color(0xFF090E1A),
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: Padding(
           padding: EdgeInsets.all(8.0),
           child: Container(
             decoration: BoxDecoration(
-              color: Color(0xFF1A1F2E),
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(10),
             ),
             child: IconButton(
               onPressed: () {},
-              icon: Icon(Icons.chevron_left, color: Colors.white, size: 20),
+              icon: Icon(Icons.chevron_left, color: AppColors.textPrimary, size: 20),
             ),
           ),
         ),
         title: Text(
           "ALU FOUNDERS HUB · BANNER",
           style: TextStyle(
-            color: Colors.grey,
+            color: AppColors.textSecondary,
             fontSize: 12,
             letterSpacing: 1.5,
           ),
@@ -66,7 +50,6 @@ class _AnnouncementpageState extends State<Announcementpage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Banner strip with the "FH" badge floating on top of it.
           SizedBox(
             height: 140,
             child: Stack(
@@ -75,7 +58,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
                 Container(
                   width: double.infinity,
                   height: 100,
-                  color: _kBannerBg,
+                  color: AppColors.surface,
                 ),
                 Positioned(
                   left: 20,
@@ -85,17 +68,17 @@ class _AnnouncementpageState extends State<Announcementpage> {
                     height: 80,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [_kBadgeStart, _kBadgeEnd],
+                      gradient: LinearGradient(
+                        colors: [AppColors.purple, AppColors.purple],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
                       borderRadius: BorderRadius.circular(18),
                     ),
-                    child: const Text(
+                    child: Text(
                       'FH',
                       style: TextStyle(
-                        color: _kBadgeText,
+                        color: AppColors.surface,
                         fontWeight: FontWeight.bold,
                         fontSize: 30,
                       ),
@@ -114,7 +97,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
                   child: Text(
                     'ALU Founders Hub',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                       fontSize: 26,
                       fontWeight: FontWeight.w800,
                     ),
@@ -126,13 +109,13 @@ class _AnnouncementpageState extends State<Announcementpage> {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: _kJoinedBg,
+                    color: AppColors.surface,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Joined',
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: AppColors.textSecondary,
                       fontWeight: FontWeight.bold,
                       fontSize: 13,
                     ),
@@ -149,26 +132,26 @@ class _AnnouncementpageState extends State<Announcementpage> {
                 Icon(
                   Icons.people_alt_outlined,
                   size: 16,
-                  color: Colors.grey[500],
+                  color: AppColors.textSecondary,
                 ),
                 const SizedBox(width: 6),
                 Text(
                   '312 members',
-                  style: TextStyle(color: Colors.grey[400], fontSize: 13),
+                  style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                 ),
                 const SizedBox(width: 12),
                 Container(
                   width: 7,
                   height: 7,
-                  decoration: const BoxDecoration(
-                    color: _kOnlineGreen,
+                  decoration: BoxDecoration(
+                    color: AppColors.green,
                     shape: BoxShape.circle,
                   ),
                 ),
                 const SizedBox(width: 6),
-                const Text(
+                Text(
                   '28 online',
-                  style: TextStyle(color: _kOnlineGreen, fontSize: 13),
+                  style: TextStyle(color: AppColors.green, fontSize: 13),
                 ),
               ],
             ),
@@ -177,7 +160,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
             child: Text(
               'Where ALU builders meet co-founders, mentors and capital.',
-              style: TextStyle(color: Colors.grey[400], fontSize: 14, height: 1.4),
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 14, height: 1.4),
             ),
           ),
           Padding(
@@ -192,7 +175,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
               ],
             ),
           ),
-          const Divider(height: 1, color: _kDividerColor),
+          const Divider(height: 1, color: AppColors.surfaceAlt),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
@@ -200,7 +183,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
                 _buildThreadCard(
                   pinned: true,
                   avatarText: 'JK',
-                  avatarColors: const [_kJKAvatar, _kJKAvatar],
+                  avatarColors: const [Color(0xFF5588E3), Color(0xFF5588E3)],
                   name: 'Jean K.',
                   isLead: true,
                   tag: '#pitch-practice',
@@ -213,7 +196,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
                 const SizedBox(height: 12),
                 _buildThreadCard(
                   avatarText: 'LM',
-                  avatarColors: const [_kLMAvatar, _kLMAvatar],
+                  avatarColors: const [Color(0xFF9B7FD4), Color(0xFF9B7FD4)],
                   name: 'Linda M.',
                   tag: '#looking-for-cofounder',
                   time: '48m',
@@ -225,7 +208,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
                 const SizedBox(height: 12),
                 _buildThreadCard(
                   avatarText: 'DA',
-                  avatarColors: const [_kDAAvatarStart, _kDAAvatarEnd],
+                  avatarColors: const [Color(0xFFE89B5C), Color(0xFFB8763E)],
                   name: 'David A.',
                   tag: '#resources',
                   time: '2h',
@@ -247,7 +230,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
         Text(
           label,
           style: TextStyle(
-            color: active ? Colors.white : Colors.grey[500],
+            color: active ? AppColors.textPrimary : AppColors.textSecondary,
             fontWeight: FontWeight.bold,
             fontSize: 15,
           ),
@@ -256,7 +239,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
         Container(
           height: 2,
           width: 60,
-          color: active ? _kAccentOrange : Colors.transparent,
+          color: active ? AppColors.orange : Colors.transparent,
         ),
       ],
     );
@@ -282,7 +265,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
       child: Text(
         text,
         style: const TextStyle(
-          color: Colors.white,
+          color: AppColors.textPrimary,
           fontWeight: FontWeight.bold,
           fontSize: 13,
         ),
@@ -305,7 +288,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: _kCardBg,
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -314,12 +297,12 @@ class _AnnouncementpageState extends State<Announcementpage> {
           if (pinned) ...[
             Row(
               children: [
-                const Icon(Icons.push_pin_outlined, size: 14, color: _kAccentOrange),
+                const Icon(Icons.push_pin_outlined, size: 14, color: AppColors.orange),
                 const SizedBox(width: 6),
                 Text(
                   'Pinned by lead',
                   style: TextStyle(
-                    color: _kAccentOrange,
+                    color: AppColors.orange,
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
                   ),
@@ -342,7 +325,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
                         Text(
                           name,
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: AppColors.textPrimary,
                             fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
@@ -355,13 +338,13 @@ class _AnnouncementpageState extends State<Announcementpage> {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: _kAccentOrange.withValues(alpha: 0.15),
+                              color: AppColors.orange.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: const Text(
                               'LEAD',
                               style: TextStyle(
-                                color: _kAccentOrange,
+                                color: AppColors.orange,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 10,
                               ),
@@ -373,7 +356,7 @@ class _AnnouncementpageState extends State<Announcementpage> {
                     const SizedBox(height: 2),
                     Text(
                       '$tag · $time',
-                      style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                      style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
                     ),
                   ],
                 ),
@@ -384,22 +367,22 @@ class _AnnouncementpageState extends State<Announcementpage> {
             const SizedBox(height: 12),
             Text(
               body,
-              style: TextStyle(color: Colors.grey[300], fontSize: 14, height: 1.4),
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 14, height: 1.4),
             ),
           ],
           if (likes != null && replies != null) ...[
             const SizedBox(height: 14),
             Row(
               children: [
-                Icon(Icons.favorite_border, size: 16, color: Colors.grey[500]),
+                Icon(Icons.favorite_border, size: 16, color: AppColors.textSecondary),
                 const SizedBox(width: 6),
-                Text('$likes', style: TextStyle(color: Colors.grey[400], fontSize: 13)),
+                Text('$likes', style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
                 const SizedBox(width: 18),
-                Icon(Icons.reply, size: 16, color: Colors.grey[500]),
+                Icon(Icons.reply, size: 16, color: AppColors.textSecondary),
                 const SizedBox(width: 6),
                 Text(
                   '$replies replies',
-                  style: TextStyle(color: Colors.grey[400], fontSize: 13),
+                  style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
                 ),
               ],
             ),
@@ -412,25 +395,25 @@ class _AnnouncementpageState extends State<Announcementpage> {
   Widget _buildComposer() {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-      decoration: const BoxDecoration(
-        color: _kPageBg,
-        border: Border(top: BorderSide(color: _kDividerColor, width: 1)),
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        border: Border(top: BorderSide(color: AppColors.surfaceAlt, width: 1)),
       ),
       child: SafeArea(
         top: false,
         child: Row(
           children: [
-            _circleAvatar(text: 'AU', colors: const [_kAUAvatar, _kAUAvatar], size: 40),
+            _circleAvatar(text: 'AU', colors: const [Color(0xFF7B6FB0), Color(0xFF7B6FB0)], size: 40),
             const SizedBox(width: 10),
             Expanded(
               child: TextField(
                 controller: _messageController,
-                style: const TextStyle(color: Colors.white, fontSize: 14),
+                style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
                 decoration: InputDecoration(
                   hintText: 'Share something...',
-                  hintStyle: TextStyle(color: Colors.grey[500], fontSize: 14),
+                  hintStyle: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                   filled: true,
-                  fillColor: _kInputBg,
+                  fillColor: AppColors.surface,
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   border: OutlineInputBorder(
@@ -446,10 +429,10 @@ class _AnnouncementpageState extends State<Announcementpage> {
               height: 44,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: _kAccentOrange,
+                color: AppColors.orange,
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: const Icon(Icons.send_rounded, color: _kPageBg, size: 20),
+              child: const Icon(Icons.send_rounded, color: AppColors.background, size: 20),
             ),
           ],
         ),

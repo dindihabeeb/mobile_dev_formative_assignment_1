@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../store/event_store.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
 import '../widgets/diagonal_banner.dart';
 import '../widgets/capacity_bar.dart';
 import '../widgets/rsvp_button.dart';
@@ -17,23 +19,19 @@ class EventRegistrationScreen extends StatelessWidget {
         final store = EventStore.instance;
 
         return ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.md),
           children: [
-        const Text(
+        Text(
           "Events",
-          style: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
+          style: AppTypography.headlineLarge.copyWith(color: AppColors.textPrimary),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         for (final event in store.events)
           Container(
-            margin: const EdgeInsets.only(bottom: 16),
+            margin: const EdgeInsets.only(bottom: AppSpacing.md),
             decoration: BoxDecoration(
               color: AppColors.surface,
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,38 +40,34 @@ class EventRegistrationScreen extends StatelessWidget {
                   color: _categoryColor(event.category),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(14),
+                  padding: const EdgeInsets.all(AppSpacing.md),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         event.title,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
-                        ),
+                        style: AppTypography.headlineMedium.copyWith(color: AppColors.textPrimary),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         event.location,
-                        style: const TextStyle(color: AppColors.textSecondary),
+                        style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: AppSpacing.sm),
                       CapacityBar(
                         current: event.attendees,
                         max: event.capacity,
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: AppSpacing.sm),
                       if (store.waitlistedEvents.contains(event.id))
                         const StatusChip(
                           label: "WAITLISTED",
-                          color: AppColors.purple,
+                          color: AppColors.accent,
                         ),
                       if (store.joinedEvents.contains(event.id))
                         const StatusChip(
                           label: "GOING",
-                          color: AppColors.green,
+                          color: AppColors.success,
                         ),
                       const SizedBox(height: 12),
                       RSVPButton(
@@ -106,13 +100,13 @@ class EventRegistrationScreen extends StatelessWidget {
   Color _categoryColor(String category) {
     switch (category) {
       case "Leadership":
-        return AppColors.orange;
+        return AppColors.primary;
       case "Entrepreneurship":
-        return AppColors.green;
+        return AppColors.success;
       case "Hackathon":
-        return AppColors.purple;
+        return AppColors.accent;
       default:
-        return AppColors.surfaceAlt;
+        return AppColors.surfaceElevated;
     }
   }
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'role_selection_screen.dart';
 
@@ -63,7 +66,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     MaterialPageRoute(builder: (_) => const RoleSelectionScreen()),
                   );
                 },
-                child: const Text('Skip', style: TextStyle(color: Color(0xFFFFFF))),
+                child: Text('Skip', style: AppTypography.labelLarge.copyWith(color: AppColors.textSecondary)),
               ),
             ),
             Expanded(
@@ -74,7 +77,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 itemBuilder: (context, index) {
                   final page = _pages[index];
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -82,31 +85,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: const Color(0xFF1A1A2E),
-                            borderRadius: BorderRadius.circular(32),
+                            color: AppColors.surface,
+                            borderRadius: BorderRadius.circular(AppSpacing.xl),
                           ),
                           child: Icon(
                             page['icon'] as IconData,
                             size: 56,
-                            color: const Color(0xFF6C63FF),
+                            color: AppColors.accent,
                           ),
                         ),
                         const SizedBox(height: 40),
                         Text(
                           page['title'] as String,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: AppTypography.headlineLarge.copyWith(color: AppColors.textPrimary),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: AppSpacing.md),
                         Text(
                           page['subtitle'] as String,
-                          style: const TextStyle(
-                            color: Color(0xFF9090A0),
-                            fontSize: 15,
+                          style: AppTypography.bodyLarge.copyWith(
+                            color: AppColors.textSecondary,
                             height: 1.5,
                           ),
                           textAlign: TextAlign.center,
@@ -118,21 +116,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xl),
               child: Column(
                 children: [
                   SmoothPageIndicator(
                     controller: _controller,
                     count: _pages.length,
-                    effect: const ExpandingDotsEffect(
-                      activeDotColor: Color(0xFF6C63FF),
-                      dotColor: Color(0xFF1A1A2E),
-                      dotHeight: 8,
-                      dotWidth: 8,
+                    effect: ExpandingDotsEffect(
+                      activeDotColor: AppColors.accent,
+                      dotColor: AppColors.surface,
+                      dotHeight: AppSpacing.sm,
+                      dotWidth: AppSpacing.sm,
                       expansionFactor: 3,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: AppSpacing.xl),
                   ElevatedButton(
                     onPressed: _onNext,
                     child: Text(_currentPage == _pages.length - 1 ? 'Get Started' : 'Next'),
