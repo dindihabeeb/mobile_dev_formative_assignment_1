@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'screens/communityPage.dart';
+import 'theme/app_theme.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: ThemeMode.dark,
-      home: Communitypage(),
+      title: 'ALU Connect',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.dark,
+      home: const SplashScreen(),
     );
   }
 }
