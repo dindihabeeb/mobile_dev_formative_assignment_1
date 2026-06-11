@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../store/event_store.dart';
 import '../theme/app_colors.dart';
 import '../widgets/diagonal_banner.dart';
@@ -12,11 +11,14 @@ class EventRegistrationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final store = context.watch<EventStore>();
+    return AnimatedBuilder(
+      animation: EventStore.instance,
+      builder: (context, _) {
+        final store = EventStore.instance;
 
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
+        return ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
         const Text(
           "Events",
           style: TextStyle(
@@ -96,6 +98,8 @@ class EventRegistrationScreen extends StatelessWidget {
             ),
           ),
       ],
+        );
+      },
     );
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../store/event_store.dart';
 import '../theme/app_colors.dart';
 import '../models/event.dart';
@@ -9,12 +8,14 @@ class MyEventsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // context.watch ensures this screen rebuilds when store changes
-    final store = context.watch<EventStore>();
-    final myEvents = store.myEvents;
-    final waitlisted = store.waitlisted;
+    return AnimatedBuilder(
+      animation: EventStore.instance,
+      builder: (context, _) {
+        final store = EventStore.instance;
+        final myEvents = store.myEvents;
+        final waitlisted = store.waitlisted;
 
-    return ListView(
+        return ListView(
       padding: const EdgeInsets.all(16),
       children: [
         const Text(
@@ -49,6 +50,8 @@ class MyEventsScreen extends StatelessWidget {
               statusColor: AppColors.purple,
             ),
       ],
+        );
+      },
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../store/event_store.dart';
 import '../theme/app_colors.dart';
 
@@ -22,8 +21,7 @@ class _AttendanceCheckInScreenState extends State<AttendanceCheckInScreen> {
   }
 
   void _handleCheckIn() {
-    final store = context.read<EventStore>();
-    final result = store.checkIn(_codeController.text);
+    final result = EventStore.instance.checkIn(_codeController.text);
 
     setState(() {
       switch (result) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../store/event_store.dart';
 import '../theme/app_colors.dart';
 
@@ -8,48 +7,41 @@ class ParticipationDashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final store = context.watch<EventStore>();
-    final attended = store.attendedEvents.length;
-    final joined = store.joinedEvents.length;
-    // Explicit double division — avoids integer truncation
-    final double rate = joined == 0 ? 0.0 : (attended / joined * 100);
+    return AnimatedBuilder(
+      animation: EventStore.instance,
+      builder: (context, _) {
+        final store = EventStore.instance;
+        final attended = store.attendedEvents.length;
+        final joined = store.joinedEvents.length;
+        // Explicit double division — avoids integer truncation
+        final double rate = joined == 0 ? 0.0 : (attended / joined * 100);
 
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Your Impact",
-            style: TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
-            ),
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              _StatCard(
+                color: AppColors.orange,
+              ),
+              _StatCard(
+                value: attended.toString(),
+                color: AppColors.green,
+              ),
+              _StatCard(
+                title: "Points",
+                value: store.participationPoints.toString(),
+                color: AppColors.purple,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                "Attendance Rate: ${rate.toStringAsFixed(1)}%",
+                style: const TextStyle(color: AppColors.textSecondary),
+              ),
+            ],
           ),
-          const SizedBox(height: 20),
-          _StatCard(
-            title: "Events Joined",
-            value: joined.toString(),
-            color: AppColors.orange,
-          ),
-          _StatCard(
-            title: "Events Attended",
-            value: attended.toString(),
-            color: AppColors.green,
-          ),
-          _StatCard(
-            title: "Points",
-            value: store.participationPoints.toString(),
-            color: AppColors.purple,
-          ),
-          const SizedBox(height: 20),
-          Text(
-            "Attendance Rate: ${rate.toStringAsFixed(1)}%",
-            style: const TextStyle(color: AppColors.textSecondary),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

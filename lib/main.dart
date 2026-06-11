@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'store/event_store.dart';
 import 'theme/app_colors.dart';
 import 'screens/event_registration_screen.dart';
@@ -8,12 +7,7 @@ import 'screens/attendance_checkin_screen.dart';
 import 'screens/participation_dashboard_screen.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => EventStore(),
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
