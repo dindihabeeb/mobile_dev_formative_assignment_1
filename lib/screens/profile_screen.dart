@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import '../services/prefs_service.dart';
 import 'edit_profile_screen.dart';
 import 'splash_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final String name;                                                                                                                             
+  final String email;
+
+  const ProfileScreen({
+    super.key,
+    required this.name,
+    required this.email
+    });
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -17,17 +23,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _loadProfile();
+    _profile = {
+      'name': widget.name,
+      'email': widget.email,
+      'cohort': '',
+      'mission': '',
+      'interests': <String>[],
+    };
   }
 
-  Future<void> _loadProfile() async {
-    final profile = await PrefsService.getProfile();
-    final role = await PrefsService.getRole();
-    setState(() {
-      _profile = profile;
-      _role = role ?? '';
-    });
+  void _onEdit() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => EditProfileScreen(profile: _profile)),
+    );
   }
+
+  void _onLogout() async {
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const SplashScreen()),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
-            onPressed: () async {
-              await PrefsService.clearAll();
+            onPressed: () {
               if (!mounted) return;
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const SplashScreen()));
             },
@@ -109,7 +127,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ElevatedButton(
               onPressed: () async {
                 await Navigator.push(context, MaterialPageRoute(builder: (_) => EditProfileScreen(profile: _profile)));
-                _loadProfile();
               },
               child: const Text('Edit Profile'),
             ),

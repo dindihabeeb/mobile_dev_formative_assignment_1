@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../services/prefs_service.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final Map<String, dynamic> profile;
@@ -60,13 +59,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _loading = true);
 
-    await PrefsService.saveProfile(
-      name: _nameController.text.trim(),
-      email: _emailController.text.trim(),
-      cohort: _cohortController.text.trim(),
-      mission: _missionController.text.trim(),
-      interests: _interests,
-    );
+    // await PrefsService.saveProfile(
+    //   name: _nameController.text.trim(),
+    //   email: _emailController.text.trim(),
+    //   cohort: _cohortController.text.trim(),
+    //   mission: _missionController.text.trim(),
+    //   interests: _interests,
+    // );
 
     if (!mounted) return;
     setState(() => _loading = false);

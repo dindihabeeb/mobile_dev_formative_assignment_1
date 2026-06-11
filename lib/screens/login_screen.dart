@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/prefs_service.dart';
-import 'profile_screen.dart';
+import 'shell.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,7 +12,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
-  bool _loading = false;
 
   @override
   void dispose() {
@@ -24,22 +22,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _onContinue() async {
     if (!_formKey.currentState!.validate()) return;
-    setState(() => _loading = true);
-
-    await PrefsService.saveProfile(
-      name: _nameController.text.trim(),
-      email: _emailController.text.trim(),
-      cohort: '',
-      mission: '',
-      interests: [],
-    );
-
-    if (!mounted) return;
-    setState(() => _loading = false);
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const ProfileScreen()),
+      MaterialPageRoute(
+        builder: (_) => AppShell(
+          name: _nameController.text.trim(),
+          email: _emailController.text.trim(),
+        ),
+      ),
     );
   }
 
@@ -83,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) return 'Please enter your name';
-                    if (v.trim().length < 2) return 'Name is too short';
+                    if (v.trim().length < 4) return 'Name is too short';
                     return null;
                   },
                 ),
@@ -108,12 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 const SizedBox(height: 40),
-                _loading
-                    ? const Center(child: CircularProgressIndicator(color: Color(0xFF6C63FF)))
-                    : ElevatedButton(
+                ElevatedButton(
                         onPressed: _onContinue,
                         child: const Text('Continue'),
-                      ),
+                ),
                 const SizedBox(height: 32),
               ],
             ),

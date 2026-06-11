@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/prefs_service.dart';
 import 'onboarding_screen.dart';
-import 'profile_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,22 +18,11 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _navigate() async {
     await Future.delayed(const Duration(seconds: 2));
 
-    final onboardingDone = await PrefsService.isOnboardingDone();
-    final loggedIn = await PrefsService.isLoggedIn();
-
     if (!mounted) return;
-
-    if (onboardingDone && loggedIn) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const ProfileScreen()),
-      );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
-      );
-    }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+    );
   }
 
   @override
