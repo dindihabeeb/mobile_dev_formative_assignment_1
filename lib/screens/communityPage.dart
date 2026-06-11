@@ -105,7 +105,6 @@ class _CommunitypageState extends State<Communitypage> {
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNav(),
     );
   }
 
@@ -267,69 +266,4 @@ class _CommunitypageState extends State<Communitypage> {
     );
   }
 
-  Widget _buildBottomNav() {
-    return Container(
-      padding: const EdgeInsets.only(top: 10, bottom: AppSpacing.sm),
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
-        border: Border(top: BorderSide(color: AppColors.border, width: 1)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _navItem(Icons.home_outlined, 'Home', false),
-              _navItem(Icons.explore_outlined, 'Explore', false),
-              _addButton(),
-              _navItem(Icons.groups_outlined, 'Clubs', true),
-              _navItem(Icons.person_outline, 'Profile', false),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Container(
-            width: 120,
-            height: 4,
-            decoration: BoxDecoration(
-              color: AppColors.textMuted,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _navItem(IconData icon, String label, bool active) {
-    final color = active ? AppColors.primary : AppColors.textMuted;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: color, size: 24),
-        const SizedBox(height: AppSpacing.xs),
-        Text(label, style: AppTypography.labelMedium.copyWith(color: color)),
-      ],
-    );
-  }
-
-  Widget _addButton() {
-    return Container(
-      width: 52,
-      height: 52,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.5),
-            blurRadius: AppSpacing.md,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: const Icon(Icons.add, color: AppColors.background, size: 28),
-    );
-  }
 }
