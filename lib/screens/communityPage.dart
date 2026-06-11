@@ -254,14 +254,14 @@ class _CommunitypageState extends State<Communitypage> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               decoration: BoxDecoration(
-                color: joined ? Colors.transparent : _kAccentOrange,
+                color: joined ? _kAccentOrange : Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
-                border: joined ? Border.all(color: _kJoinedBorder) : null,
+                border: joined ? null : Border.all(color: _kJoinedBorder),
               ),
               child: Text(
                 joined ? 'Joined' : 'Join',
                 style: TextStyle(
-                  color: joined ? Colors.grey[300] : _kPageBg,
+                  color: joined ? _kPageBg : Colors.grey[300],
                   fontWeight: FontWeight.bold,
                   fontSize: 13,
                 ),
