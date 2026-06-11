@@ -5,13 +5,15 @@ import 'screens/event_registration_screen.dart';
 import 'screens/my_events_screen.dart';
 import 'screens/attendance_checkin_screen.dart';
 import 'screens/participation_dashboard_screen.dart';
+import 'theme/app_theme.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.star), label: "Points"),
         ],
       ),
+    );
+  }
+      title: 'ALU Connect',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.dark,
+      home: const SplashScreen(),
     );
   }
 }
