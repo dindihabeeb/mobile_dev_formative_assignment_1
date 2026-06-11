@@ -47,6 +47,10 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs photo library access to let you add cover images to posts.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera access to let you take photos for posts.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

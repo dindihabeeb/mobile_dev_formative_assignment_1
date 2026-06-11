@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/communityPage.dart';
 import 'theme/app_colors.dart';
 import 'store/event_store.dart';
 import 'screens/event_registration_screen.dart';
