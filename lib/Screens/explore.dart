@@ -126,7 +126,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
                         Row(
                           children: const [
-                            Text('📈  ', style: TextStyle(fontSize: 16)),
+                            // Text('📈  ', style: TextStyle(fontSize: 16)),
                             Text(
                               'Trending this week',
                               style: TextStyle(

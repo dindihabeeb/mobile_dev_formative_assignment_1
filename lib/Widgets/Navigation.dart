@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 
 class BottomNav extends StatelessWidget {
   final int currentIndex;
@@ -13,7 +14,7 @@ class BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      color: const Color(0xFF1A2D3F),
+      color: AppColors.surface,
       shape: const CircularNotchedRectangle(),
       notchMargin: 8,
       child: Row(
@@ -87,13 +88,13 @@ class _NavItem extends StatelessWidget {
           children: [
             Icon(
               isActive ? activeIcon : icon,
-              color: isActive ? const Color(0xFFFFB800) : Colors.white54,
+              color: isActive ? AppColors.accent : Colors.white54,
             ),
             const SizedBox(height: 2),
             Text(
               label,
               style: TextStyle(
-                color: isActive ? const Color(0xFFFFB800) : Colors.white54,
+                color: isActive ? AppColors.accent : Colors.white54,
                 fontSize: 10,
               ),
             ),

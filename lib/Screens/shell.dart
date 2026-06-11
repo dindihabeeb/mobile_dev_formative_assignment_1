@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/Navigation.dart';
-import '../screens/feed.dart';
+import '../screens/home.dart';
 import '../screens/explore.dart';
 import '../screens/communityPage.dart';
 import '../screens/profile_screen.dart';
@@ -27,9 +27,9 @@ class _AppShellState extends State<AppShell> {
   @override
   Widget build(BuildContext context) {
     final screens = [
-      const FeedScreen(),
-      const ExploreScreen(),
-      const Communitypage(),
+      HomeScreen(name: widget.name),
+      ExploreScreen(),
+      Communitypage(),
       ProfileScreen(name: widget.name, email: widget.email),
     ];
 
