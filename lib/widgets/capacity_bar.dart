@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 
 class CapacityBar extends StatelessWidget {
   final int current;
@@ -12,22 +13,26 @@ class CapacityBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ratio = current / max;
+    // Guard against divide-by-zero
+    final double ratio = max == 0 ? 0.0 : (current / max).clamp(0.0, 1.0);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        LinearProgressIndicator(
-          value: ratio,
-          backgroundColor: const Color(0xFF2A2E45),
-          color: const Color(0xFFF5A623),
-          minHeight: 8,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: LinearProgressIndicator(
+            value: ratio,
+            backgroundColor: AppColors.surfaceAlt,
+            color: ratio >= 1.0 ? Colors.redAccent : AppColors.orange,
+            minHeight: 8,
+          ),
         ),
         const SizedBox(height: 6),
         Text(
-          "$current / $max spots",
-          style: const TextStyle(color: Colors.grey),
-        )
+          max == 0 ? "Capacity unknown" : "$current / $max spots",
+          style: const TextStyle(color: AppColors.textSecondary),
+        ),
       ],
     );
   }

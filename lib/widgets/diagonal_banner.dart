@@ -7,9 +7,12 @@ class DiagonalBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _DiagonalPainter(color),
-      child: const SizedBox(height: 90, width: double.infinity),
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
+      child: CustomPaint(
+        painter: _DiagonalPainter(color),
+        child: const SizedBox(height: 90, width: double.infinity),
+      ),
     );
   }
 }
@@ -21,22 +24,23 @@ class _DiagonalPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final bg = Paint()..color = color;
-    canvas.drawRect(Offset.zero & size, bg);
-
-    final pattern = Paint()
-      ..color = Colors.white
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()..color = color,
+    );
+    final linePaint = Paint()
+      // ignore: deprecated_member_use
+      ..color = Colors.white.withOpacity(0.15)
       ..strokeWidth = 2;
-
     for (double i = -size.height; i < size.width; i += 14) {
       canvas.drawLine(
         Offset(i, 0),
         Offset(i + size.height, size.height),
-        pattern,
+        linePaint,
       );
     }
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _DiagonalPainter old) => old.color != color;
 }

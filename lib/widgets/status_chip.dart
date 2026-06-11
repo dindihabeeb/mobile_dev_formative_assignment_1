@@ -13,16 +13,21 @@ class StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.transparent,
+        // Subtle tinted background makes this read as an actual chip
+        // ignore: deprecated_member_use
+        color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(999),
+        // ignore: deprecated_member_use
+        border: Border.all(color: color.withOpacity(0.4), width: 1),
       ),
       child: Text(
         label,
         style: TextStyle(
           color: color,
           fontWeight: FontWeight.w600,
+          fontSize: 12,
         ),
       ),
     );

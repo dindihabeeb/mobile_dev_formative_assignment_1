@@ -18,8 +18,6 @@ class Event {
   bool get isFull => attendees >= capacity;
 }
 
-// ---------------- MOCK STATE ----------------
-
 List<Event> events = [
   Event(
     id: 1,
@@ -52,8 +50,6 @@ Set<int> waitlistedEvents = {};
 Set<int> attendedEvents = {};
 
 int participationPoints = 0;
-
-// ---------------- ACTIONS ----------------
 
 void rsvp(Event event) {
   if (event.isFull) {

@@ -17,30 +17,41 @@ class ParticipationDashboardScreen extends StatelessWidget {
         final double rate = joined == 0 ? 0.0 : (attended / joined * 100);
 
         return Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
-              _StatCard(
-                color: AppColors.orange,
-              ),
-              _StatCard(
-                value: attended.toString(),
-                color: AppColors.green,
-              ),
-              _StatCard(
-                title: "Points",
-                value: store.participationPoints.toString(),
-                color: AppColors.purple,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                "Attendance Rate: ${rate.toStringAsFixed(1)}%",
-                style: const TextStyle(color: AppColors.textSecondary),
-              ),
-            ],
+          const Text(
+            "Your Impact",
+            style: TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
           ),
-        );
+          const SizedBox(height: 20),
+          _StatCard(
+            title: "Events Joined",
+            value: joined.toString(),
+            color: AppColors.orange,
+          ),
+          _StatCard(
+            title: "Events Attended",
+            value: attended.toString(),
+            color: AppColors.green,
+          ),
+          _StatCard(
+            title: "Points",
+            value: store.participationPoints.toString(),
+            color: AppColors.purple,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            "Attendance Rate: ${rate.toStringAsFixed(1)}%",
+            style: const TextStyle(color: AppColors.textSecondary),
+          ),
+        ],
+      ));
       },
     );
   }
