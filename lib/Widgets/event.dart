@@ -32,6 +32,7 @@ class _PostFormState extends State<PostForm> {
     'Social': Color(0xFFFF4444),
     'Sports': Color(0xFF44DD88),
     'Tech': Color(0xFF4499FF),
+    'Entrepreneurship': Color(0xFF9B59B6),
   };
 
   @override
@@ -265,12 +266,32 @@ class _PostFormState extends State<PostForm> {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              if (_titleController.text.trim().isEmpty) {
+              final missing = <String>[];
+              if (_titleController.text.trim().isEmpty) missing.add('title');
+              if (_descriptionController.text.trim().isEmpty) missing.add('description');
+              if (_selectedDate == null) {
+                missing.add(widget.type == 'Event'
+                    ? 'date & time'
+                    : 'application deadline');
+              }
+              if (_selectedCategory == null) missing.add('category');
+              if (widget.type == 'Opportunity' &&
+                  _applyLinkController.text.trim().isEmpty) {
+                missing.add('apply link');
+              }
+
+              if (missing.isNotEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Please add a title')),
+                  SnackBar(
+                    content: Text(
+                      'Please fill in: ${missing.join(', ')}',
+                    ),
+                    backgroundColor: const Color(0xFFFF4444),
+                  ),
                 );
                 return;
               }
+
               PostStore.add(Post(
                 id: DateTime.now().millisecondsSinceEpoch.toString(),
                 type: widget.type,

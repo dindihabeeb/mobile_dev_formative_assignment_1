@@ -20,6 +20,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     'Social': Color(0xFFFF4444),
     'Sports': Color(0xFF44DD88),
     'Tech': Color(0xFF4499FF),
+    'Entrepreneurship': Color(0xFF9B59B6),
   };
 
   List<Post> _filtered(List<Post> all) {
@@ -61,9 +62,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
       builder: (context, allPosts, _) {
         final filtered = _filtered(allPosts);
         final trending = _trending(filtered);
-        final isFiltering = _searchQuery.isNotEmpty ||
-            _typeFilter != 'All' ||
-            _categoryFilter.isNotEmpty;
 
         return Scaffold(
           backgroundColor: const Color(0xFF0D1B2A),
@@ -88,14 +86,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
                         const SizedBox(height: 16),
 
-                        // Search bar
                         TextField(
                           onChanged: (v) =>
                               setState(() => _searchQuery = v),
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            hintText:
-                                'Search events, clubs, people...',
+                            hintText: 'Search events, clubs, people...',
                             hintStyle:
                                 const TextStyle(color: Colors.white38),
                             prefixIcon: const Icon(Icons.search,
@@ -111,7 +107,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
                         const SizedBox(height: 16),
 
-                        // Type filter chips
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
@@ -124,13 +119,18 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
                         const SizedBox(height: 24),
 
-                        const Text(
-                          'Trending this week',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: const [
+                            Text('📈  ', style: TextStyle(fontSize: 16)),
+                            Text(
+                              'Trending this week',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
 
                         const SizedBox(height: 12),
@@ -139,7 +139,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ),
                 ),
 
-                // Carousel post cards
+                // Trending carousel
                 SliverToBoxAdapter(
                   child: trending.isEmpty
                       ? const Padding(
@@ -179,65 +179,84 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   ),
                 ),
 
-                // Horizontal category cards
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 110,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 16),
-                      children: _categoryColors.entries.map((e) {
+                // 2-column category grid
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  sliver: SliverGrid(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1.9,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (context, i) {
+                        final entry =
+                            _categoryColors.entries.elementAt(i);
                         final count =
-                            _countThisMonth(allPosts, e.key);
+                            _countThisMonth(allPosts, entry.key);
                         return GestureDetector(
                           onTap: () => setState(() {
-                            _categoryFilter = _categoryFilter == e.key
-                                ? ''
-                                : e.key;
+                            _categoryFilter =
+                                _categoryFilter == entry.key
+                                    ? ''
+                                    : entry.key;
                           }),
                           child: _CategoryCard(
-                            name: e.key,
-                            color: e.value,
+                            name: entry.key,
+                            color: entry.value,
                             count: count,
-                            isSelected: _categoryFilter == e.key,
+                            isSelected: _categoryFilter == entry.key,
                           ),
                         );
-                      }).toList(),
+                      },
+                      childCount: _categoryColors.length,
                     ),
                   ),
                 ),
 
-                // Filtered results (shown when searching or filtering)
-                if (isFiltering) ...[
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.fromLTRB(16, 24, 16, 8),
-                      child: Text(
-                        'Results (${filtered.length})',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                // All on campus label
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 28, 16, 12),
+                    child: Text(
+                      filtered.isEmpty
+                          ? 'All on campus'
+                          : 'All on campus (${filtered.length})',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+
+                // All on campus list
+                filtered.isEmpty
+                    ? const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'Nothing here yet — be the first to post!',
+                            style: TextStyle(color: Colors.white38),
+                          ),
+                        ),
+                      )
+                    : SliverPadding(
+                        padding:
+                            const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (_, i) =>
+                                _CampusRow(post: filtered[i]),
+                            childCount: filtered.length,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  SliverPadding(
-                    padding:
-                        const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (_, i) => _ResultRow(post: filtered[i]),
-                        childCount: filtered.length,
-                      ),
-                    ),
-                  ),
-                ],
 
-                const SliverToBoxAdapter(
-                    child: SizedBox(height: 80)),
+                const SliverToBoxAdapter(child: SizedBox(height: 80)),
               ],
             ),
           ),
@@ -252,7 +271,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
       onTap: () => setState(() => _typeFilter = label),
       child: Container(
         margin: const EdgeInsets.only(right: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+        padding:
+            const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
               ? const Color(0xFFFFB800)
@@ -272,7 +292,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   }
 }
 
-// ── Reusable category card ───────────────────────────────────────────────────
+// ── Category card ─────────────────────────────────────────────────────────────
 
 class CategoryCard extends StatelessWidget {
   final String name;
@@ -291,8 +311,6 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 140,
-      margin: const EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -326,15 +344,14 @@ class CategoryCard extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 14)),
           Text('$count this month',
-              style:
-                  const TextStyle(color: Colors.white54, fontSize: 11)),
+              style: const TextStyle(
+                  color: Colors.white54, fontSize: 11)),
         ],
       ),
     );
   }
 }
 
-// Private alias used only inside this file
 class _CategoryCard extends CategoryCard {
   const _CategoryCard({
     required super.name,
@@ -344,57 +361,153 @@ class _CategoryCard extends CategoryCard {
   });
 }
 
-// ── Search result row ────────────────────────────────────────────────────────
+// ── Campus row ────────────────────────────────────────────────────────────────
 
-class _ResultRow extends StatelessWidget {
+class _CampusRow extends StatelessWidget {
   final Post post;
-  const _ResultRow({required this.post});
+  const _CampusRow({required this.post});
 
   static const Map<String, Color> _colors = {
     'Careers': Color(0xFFFFB800),
     'Social': Color(0xFFFF4444),
     'Sports': Color(0xFF44DD88),
     'Tech': Color(0xFF4499FF),
+    'Entrepreneurship': Color(0xFF9B59B6),
   };
+
+  static const List<String> _months = [
+    'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+    'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final dot = _colors[post.category] ?? const Color(0xFFFFB800);
+    final color = _colors[post.category] ?? const Color(0xFFFFB800);
+    final date = post.date;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: const Color(0xFF1A2D3F),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
         children: [
+          // Date badge
           Container(
-            width: 10,
-            height: 10,
-            decoration:
-                BoxDecoration(color: dot, shape: BoxShape.circle),
+            width: 48,
+            height: 54,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.25),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  date != null ? '${date.day}' : '--',
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    height: 1.1,
+                  ),
+                ),
+                Text(
+                  date != null
+                      ? _months[date.month - 1]
+                      : post.type == 'Opportunity'
+                          ? 'OPEN'
+                          : 'TBD',
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           ),
+
           const SizedBox(width: 12),
+
+          // Title + location / category
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(post.title,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
-                const SizedBox(height: 2),
-                Text(post.category,
-                    style: const TextStyle(
-                        color: Colors.white54, fontSize: 12)),
+                Text(
+                  post.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    const Icon(Icons.location_on_outlined,
+                        color: Colors.white54, size: 12),
+                    const SizedBox(width: 2),
+                    Expanded(
+                      child: Text(
+                        post.location.isNotEmpty
+                            ? post.location
+                            : post.category,
+                        style: const TextStyle(
+                            color: Colors.white54, fontSize: 12),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-          Text(post.type,
-              style: const TextStyle(
-                  color: Colors.white38, fontSize: 11)),
+
+          const SizedBox(width: 8),
+
+          // Going / Apply button
+          _ActionButton(post: post),
         ],
+      ),
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  final Post post;
+  const _ActionButton({required this.post});
+
+  @override
+  Widget build(BuildContext context) {
+    if (post.type == 'Opportunity') {
+      return _chip('Apply', const Color(0xFFFFB800), Colors.black);
+    }
+    if (post.isFinished) {
+      return _chip('Finished', Colors.white24, Colors.white54);
+    }
+    return _chip('✓  Going', const Color(0xFF44DD88), Colors.black);
+  }
+
+  Widget _chip(String label, Color bg, Color fg) {
+    return Container(
+      padding:
+          const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+            color: fg,
+            fontSize: 12,
+            fontWeight: FontWeight.bold),
       ),
     );
   }
