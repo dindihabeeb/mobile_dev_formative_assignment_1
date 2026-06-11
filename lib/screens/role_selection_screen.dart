@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../services/prefs_service.dart';
 import 'login_screen.dart';
 
 class RoleSelectionScreen extends StatefulWidget {
@@ -14,7 +13,6 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
 
   void _continue() async {
     if (_selectedRole == null) return;
-    await PrefsService.saveRole(_selectedRole!);
     if (!mounted) return;
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
   }
@@ -36,7 +34,21 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
         ),
         child: Row(
           children: [
-            Icon(icon, color: selected ? const Color(0xFF6C63FF) : const Color(0xFF9090A0), size: 32),
+            Container(
+              width: 52,
+              height: 52,
+              decoration: BoxDecoration(
+                color: selected
+                    ? const Color(0xFF6C63FF).withOpacity(0.15)
+                    : const Color(0xFF0D0D1A),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(
+                icon,
+                color: selected ? const Color(0xFF6C63FF) : const Color(0xFF9090A0),
+                size: 28,
+              ),
+            ),
             const SizedBox(width: 16),
             Expanded(
               child: Column(

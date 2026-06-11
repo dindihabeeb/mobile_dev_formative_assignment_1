@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../services/prefs_service.dart';
 import 'role_selection_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -39,7 +38,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      await PrefsService.setOnboardingDone();
+      // await PrefsService.setOnboardingDone();
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
@@ -58,14 +57,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               alignment: Alignment.topRight,
               child: TextButton(
                 onPressed: () async {
-                  await PrefsService.setOnboardingDone();
                   if (!mounted) return;
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (_) => const RoleSelectionScreen()),
                   );
                 },
-                child: const Text('Skip', style: TextStyle(color: Color(0xFF9090A0))),
+                child: const Text('Skip', style: TextStyle(color: Color(0xFFFFFF))),
               ),
             ),
             Expanded(

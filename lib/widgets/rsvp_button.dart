@@ -22,7 +22,7 @@ class RSVPButton extends StatelessWidget {
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor:
-              isPrimary ? AppColors.orange : AppColors.surfaceAlt,
+              isPrimary ? AppColors.primary : AppColors.surfaceElevated,
           foregroundColor: isPrimary ? Colors.black : AppColors.textPrimary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),

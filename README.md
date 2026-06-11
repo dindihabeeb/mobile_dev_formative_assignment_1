@@ -85,3 +85,7 @@
 
   Back button on any tab screen exits the app — this is intentional. Only detail/create screens push onto the
   back-stack.
+
+
+  ---
+  # Contributors
