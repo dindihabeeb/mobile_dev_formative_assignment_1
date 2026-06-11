@@ -1,6 +1,6 @@
 {
-    "name": "feed",
-    "short_name": "feed",
+    "name": "mobile_dev_formative_assignment_1",
+    "short_name": "mobile_dev_formative_assignment_1",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
