@@ -10,9 +10,9 @@ class AppColors {
   static const Color border          = Color(0xFF1E2540);
 
   // brand
-  static const Color primary     = Color(0xFF7C4DFF);
-  static const Color primaryDark = Color(0xFF5C35CC);
-  static const Color accent      = Color(0xFF9C6FFF);
+  static const Color primary     = Color(0xFFF0A500); // amber
+  static const Color primaryDark = Color(0xFFBF8400);
+  static const Color accent      = Color(0xFF7C4DFF); // electric purple
 
   // semantic
   static const Color success = Color(0xFF20B958);
@@ -36,10 +36,10 @@ class AppColors {
   static const Color textMutedLight     = Color(0xFF9095B0);
 
   // category palette
-  static const Color catCareers          = Color(0xFFF0A500);
-  static const Color catSocial           = Color(0xFFE8334A);
-  static const Color catSports           = Color(0xFF20B958);
-  static const Color catTech             = Color(0xFF3D8EF0);
+  static const Color catCareers         = Color(0xFFF0A500);
+  static const Color catSocial          = Color(0xFFE8334A);
+  static const Color catSports          = Color(0xFF20B958);
+  static const Color catTech            = Color(0xFF3D8EF0);
   static const Color catEntrepreneurship = Color(0xFF9747FF);
 
   static const Map<String, Color> categoryColors = {
@@ -54,12 +54,12 @@ class AppColors {
       categoryColors[category] ?? primary;
 
   // misc
-  static const Color online  = Color(0xFF20B958);
-  static const Color scrim   = Color(0x99000000);
-  static const Color shimmer = Color(0xFF1E2540);
+  static const Color online    = Color(0xFF20B958);
+  static const Color scrim     = Color(0x99000000);
+  static const Color shimmer   = Color(0xFF1E2540);
 
   // legacy aliases
-  static const Color orange     = Color(0xFFF0A500);
+  static const Color orange     = primary;
   static const Color green      = success;
   static const Color purple     = accent;
   static const Color surfaceAlt = surfaceElevated;
