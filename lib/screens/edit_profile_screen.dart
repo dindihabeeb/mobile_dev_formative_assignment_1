@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_theme.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final Map<String, dynamic> profile;
@@ -58,18 +60,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _onSave() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _loading = true);
-
-    // await PrefsService.saveProfile(
-    //   name: _nameController.text.trim(),
-    //   email: _emailController.text.trim(),
-    //   cohort: _cohortController.text.trim(),
-    //   mission: _missionController.text.trim(),
-    //   interests: _interests,
-    // );
-
     if (!mounted) return;
     setState(() => _loading = false);
-    Navigator.pop(context);
+    Navigator.pop(context, {
+      'name': _nameController.text.trim(),
+      'email': _emailController.text.trim(),
+      'cohort': _cohortController.text.trim(),
+      'mission': _missionController.text.trim(),
+      'interests': List<String>.from(_interests),
+    });
   }
 
   @override
@@ -84,12 +83,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 children: [
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+                    icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textPrimary),
                   ),
                   const Text(
                     'Edit Profile',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                     ),
@@ -110,10 +109,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _nameController,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: AppColors.textPrimary),
                         decoration: const InputDecoration(
                           hintText: 'Your full name',
-                          prefixIcon: Icon(Icons.person_outline, color: Color(0xFF9090A0)),
+                          prefixIcon: Icon(Icons.person_outline, color: AppTheme.textSecondary),
                         ),
                         validator: (v) {
                           if (v == null || v.trim().isEmpty) return 'Name is required';
@@ -126,11 +125,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _emailController,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: AppColors.textPrimary),
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                           hintText: 'your.email@alustudent.com',
-                          prefixIcon: Icon(Icons.email_outlined, color: Color(0xFF9090A0)),
+                          prefixIcon: Icon(Icons.email_outlined, color: AppTheme.textSecondary),
                         ),
                         validator: (v) {
                           if (v == null || v.trim().isEmpty) return 'Email is required';
@@ -143,10 +142,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _cohortController,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: AppColors.textPrimary),
                         decoration: const InputDecoration(
                           hintText: 'e.g. Class of 2027',
-                          prefixIcon: Icon(Icons.school_rounded, color: Color(0xFF9090A0)),
+                          prefixIcon: Icon(Icons.school_rounded, color: AppTheme.textSecondary),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -154,13 +153,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _missionController,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: AppColors.textPrimary),
                         maxLines: 3,
                         decoration: const InputDecoration(
                           hintText: 'What impact do you want to create?',
                           prefixIcon: Padding(
                             padding: EdgeInsets.only(bottom: 40),
-                            child: Icon(Icons.flag_rounded, color: Color(0xFF9090A0)),
+                            child: Icon(Icons.flag_rounded, color: AppTheme.textSecondary),
                           ),
                         ),
                       ),
@@ -172,10 +171,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           Expanded(
                             child: TextFormField(
                               controller: _interestController,
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: AppColors.textPrimary),
                               decoration: const InputDecoration(
                                 hintText: 'Add an interest',
-                                prefixIcon: Icon(Icons.add_rounded, color: Color(0xFF9090A0)),
+                                prefixIcon: Icon(Icons.add_rounded, color: AppTheme.textSecondary),
                               ),
                               onFieldSubmitted: _addInterest,
                             ),
@@ -187,10 +186,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               width: 48,
                               height: 48,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF6C63FF),
+                                color: AppColors.purple,
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: const Icon(Icons.add, color: Colors.white),
+                              child: const Icon(Icons.add, color: AppColors.textPrimary),
                             ),
                           ),
                         ],
@@ -207,19 +206,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                               decoration: BoxDecoration(
                                 color: added
-                                    ? const Color(0xFF6C63FF).withOpacity(0.15)
-                                    : const Color(0xFF1A1A2E),
+                                    ? AppColors.purple.withValues(alpha: 0.15)
+                                    : AppColors.surface,
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
                                   color: added
-                                      ? const Color(0xFF6C63FF)
-                                      : const Color(0xFF9090A0).withOpacity(0.3),
+                                      ? AppColors.purple
+                                      : AppTheme.textSecondary.withValues(alpha: 0.3),
                                 ),
                               ),
                               child: Text(
                                 s,
                                 style: TextStyle(
-                                  color: added ? const Color(0xFF6C63FF) : const Color(0xFF9090A0),
+                                  color: added ? AppColors.purple : AppTheme.textSecondary,
                                   fontSize: 13,
                                 ),
                               ),
@@ -236,21 +235,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             return Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF6C63FF).withOpacity(0.15),
+                                color: AppColors.purple.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: const Color(0xFF6C63FF)),
+                                border: Border.all(color: AppColors.purple),
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
                                     interest,
-                                    style: const TextStyle(color: Color(0xFF6C63FF), fontSize: 13),
+                                    style: const TextStyle(color: AppColors.purple, fontSize: 13),
                                   ),
                                   const SizedBox(width: 4),
                                   GestureDetector(
                                     onTap: () => _removeInterest(interest),
-                                    child: const Icon(Icons.close, color: Color(0xFF6C63FF), size: 14),
+                                    child: const Icon(Icons.close, color: AppColors.purple, size: 14),
                                   ),
                                 ],
                               ),
@@ -261,7 +260,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       const SizedBox(height: 32),
                       _loading
                           ? const Center(
-                              child: CircularProgressIndicator(color: Color(0xFF6C63FF)),
+                              child: CircularProgressIndicator(color: AppColors.purple),
                             )
                           : ElevatedButton(
                               onPressed: _onSave,
@@ -283,7 +282,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Text(
       text,
       style: const TextStyle(
-        color: Colors.white,
+        color: AppColors.textPrimary,
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),

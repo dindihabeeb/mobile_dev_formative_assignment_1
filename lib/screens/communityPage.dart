@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import '../model/club.dart';
-
-const Color _kPageBg = Color(0xFF0B0F1A);
-const Color _kCardBg = Color(0xFF121A2C);
-const Color _kTabBg = Color(0xFF1A1F2E);
-const Color _kTabActiveBg = Color(0xFF2A2F3E);
-const Color _kAccentOrange = Color(0xFFFCAA1A);
-const Color _kOnlineGreen = Color(0xFF34D399);
-const Color _kJoinedBorder = Color(0xFF3D4458);
+import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
 
 class Communitypage extends StatefulWidget {
   const Communitypage({super.key});
@@ -33,35 +28,35 @@ class _CommunitypageState extends State<Communitypage> {
         : allClubs.where((c) => _joinedClubs.contains(c.name)).toList();
 
     return Scaffold(
-      backgroundColor: _kPageBg,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SafeArea(
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, AppSpacing.md),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Communities',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
+                      style: AppTypography.displayLarge.copyWith(
+                        color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     Text(
                       'Clubs & spaces across Kigali campus',
-                      style: TextStyle(fontSize: 14, color: Colors.grey[400]),
+                      style: AppTypography.titleMedium.copyWith(
+                        color: AppColors.textMuted,
+                      ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: AppSpacing.md),
                     Container(
-                      padding: const EdgeInsets.all(4),
+                      padding: const EdgeInsets.all(AppSpacing.xs),
                       decoration: BoxDecoration(
-                        color: _kTabBg,
-                        borderRadius: BorderRadius.circular(12),
+                        color: AppColors.surfaceElevated,
+                        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                       ),
                       child: Row(
                         children: [
@@ -93,11 +88,13 @@ class _CommunitypageState extends State<Communitypage> {
                     ? Center(
                         child: Text(
                           'No clubs joined yet',
-                          style: TextStyle(color: Colors.grey[500]),
+                          style: AppTypography.bodyMedium.copyWith(
+                            color: AppColors.textMuted,
+                          ),
                         ),
                       )
                     : ListView.separated(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, AppSpacing.md),
                         itemCount: clubsToShow.length,
                         separatorBuilder: (_, _) => const SizedBox(height: 12),
                         itemBuilder: (context, index) =>
@@ -108,7 +105,6 @@ class _CommunitypageState extends State<Communitypage> {
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNav(),
     );
   }
 
@@ -123,7 +119,7 @@ class _CommunitypageState extends State<Communitypage> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: selected ? _kTabActiveBg : Colors.transparent,
+          color: selected ? AppColors.surfaceAlt : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
         ),
         alignment: Alignment.center,
@@ -132,18 +128,15 @@ class _CommunitypageState extends State<Communitypage> {
             children: [
               TextSpan(
                 text: label,
-                style: TextStyle(
-                  color: selected ? Colors.white : Colors.grey[500],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                style: AppTypography.labelLarge.copyWith(
+                  color: selected ? AppColors.textPrimary : AppColors.textMuted,
                 ),
               ),
               TextSpan(
                 text: ' $count',
-                style: TextStyle(
-                  color: Colors.grey[500],
+                style: AppTypography.labelLarge.copyWith(
+                  color: AppColors.textMuted,
                   fontWeight: FontWeight.normal,
-                  fontSize: 14,
                 ),
               ),
             ],
@@ -158,8 +151,8 @@ class _CommunitypageState extends State<Communitypage> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: _kCardBg,
-        borderRadius: BorderRadius.circular(16),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -178,61 +171,62 @@ class _CommunitypageState extends State<Communitypage> {
             ),
             child: Text(
               club.initials,
-              style: const TextStyle(
-                color: Colors.white,
+              style: AppTypography.titleLarge.copyWith(
+                color: AppColors.textPrimary,
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.radiusMd),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   club.name,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: AppTypography.bodyLarge.copyWith(
+                    color: AppColors.textPrimary,
                     fontWeight: FontWeight.bold,
-                    fontSize: 15,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   club.description,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Colors.grey[500], fontSize: 13),
+                  style: AppTypography.bodyMedium.copyWith(
+                    color: AppColors.textMuted,
+                  ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Row(
                   children: [
                     Icon(
                       Icons.people_alt_outlined,
                       size: 14,
-                      color: Colors.grey[500],
+                      color: AppColors.textMuted,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppSpacing.xs),
                     Text(
                       '${club.members}',
-                      style: TextStyle(color: Colors.grey[400], fontSize: 12),
+                      style: AppTypography.labelMedium.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                     const SizedBox(width: 10),
                     Container(
                       width: 6,
                       height: 6,
                       decoration: const BoxDecoration(
-                        color: _kOnlineGreen,
+                        color: AppColors.online,
                         shape: BoxShape.circle,
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppSpacing.xs),
                     Text(
                       '${club.online} online',
-                      style: const TextStyle(
-                        color: _kOnlineGreen,
-                        fontSize: 12,
+                      style: AppTypography.labelMedium.copyWith(
+                        color: AppColors.online,
                       ),
                     ),
                   ],
@@ -240,7 +234,7 @@ class _CommunitypageState extends State<Communitypage> {
               ],
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: AppSpacing.sm),
           GestureDetector(
             onTap: () {
               setState(() {
@@ -254,16 +248,15 @@ class _CommunitypageState extends State<Communitypage> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               decoration: BoxDecoration(
-                color: joined ? _kAccentOrange : Colors.transparent,
-                borderRadius: BorderRadius.circular(20),
-                border: joined ? null : Border.all(color: _kJoinedBorder),
+                color: joined ? AppColors.primary : Colors.transparent,
+                borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+                border: joined ? null : Border.all(color: AppColors.border),
               ),
               child: Text(
                 joined ? 'Joined' : 'Join',
-                style: TextStyle(
-                  color: joined ? _kPageBg : Colors.grey[300],
+                style: AppTypography.bodyMedium.copyWith(
+                  color: joined ? AppColors.background : AppColors.textSecondary,
                   fontWeight: FontWeight.bold,
-                  fontSize: 13,
                 ),
               ),
             ),
@@ -273,69 +266,4 @@ class _CommunitypageState extends State<Communitypage> {
     );
   }
 
-  Widget _buildBottomNav() {
-    return Container(
-      padding: const EdgeInsets.only(top: 10, bottom: 8),
-      decoration: const BoxDecoration(
-        color: _kCardBg,
-        border: Border(top: BorderSide(color: Color(0xFF1F2433), width: 1)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _navItem(Icons.home_outlined, 'Home', false),
-              _navItem(Icons.explore_outlined, 'Explore', false),
-              _addButton(),
-              _navItem(Icons.groups_outlined, 'Clubs', true),
-              _navItem(Icons.person_outline, 'Profile', false),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Container(
-            width: 120,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.grey[600],
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _navItem(IconData icon, String label, bool active) {
-    final color = active ? _kAccentOrange : Colors.grey[500];
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: color, size: 24),
-        const SizedBox(height: 4),
-        Text(label, style: TextStyle(color: color, fontSize: 12)),
-      ],
-    );
-  }
-
-  Widget _addButton() {
-    return Container(
-      width: 52,
-      height: 52,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: _kAccentOrange,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: _kAccentOrange.withValues(alpha: 0.5),
-            blurRadius: 16,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: const Icon(Icons.add, color: _kPageBg, size: 28),
-    );
-  }
 }

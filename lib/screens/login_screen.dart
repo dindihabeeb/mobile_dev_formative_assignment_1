@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
 import 'shell.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -39,38 +42,34 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 48),
-                const Text(
+                const SizedBox(height: AppSpacing.xxl),
+                Text(
                   'Create your account',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppTypography.headlineLarge.copyWith(color: AppColors.textPrimary),
                 ),
-                const SizedBox(height: 8),
-                const Text(
+                const SizedBox(height: AppSpacing.sm),
+                Text(
                   'You can complete your profile after signing in.',
-                  style: TextStyle(color: Color(0xFF9090A0), fontSize: 14),
+                  style: AppTypography.titleMedium.copyWith(color: AppColors.textSecondary),
                 ),
                 const SizedBox(height: 40),
-                const Text(
+                Text(
                   'Full Name',
-                  style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+                  style: AppTypography.titleMedium.copyWith(color: AppColors.textPrimary),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 TextFormField(
                   controller: _nameController,
-                  style: const TextStyle(color: Colors.white),
+                  style: AppTypography.bodyLarge.copyWith(color: AppColors.textPrimary),
                   decoration: const InputDecoration(
                     hintText: 'e.g. Aline Uwase',
-                    prefixIcon: Icon(Icons.person_outline, color: Color(0xFF9090A0)),
+                    prefixIcon: Icon(Icons.person_outline, color: AppColors.textSecondary),
                   ),
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) return 'Please enter your name';
@@ -78,19 +77,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 24),
-                const Text(
+                const SizedBox(height: AppSpacing.lg),
+                Text(
                   'ALU Email',
-                  style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+                  style: AppTypography.titleMedium.copyWith(color: AppColors.textPrimary),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 TextFormField(
                   controller: _emailController,
-                  style: const TextStyle(color: Colors.white),
+                  style: AppTypography.bodyLarge.copyWith(color: AppColors.textPrimary),
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
                     hintText: 'e.g. a.uwase@alustudent.com',
-                    prefixIcon: Icon(Icons.email_outlined, color: Color(0xFF9090A0)),
+                    prefixIcon: Icon(Icons.email_outlined, color: AppColors.textSecondary),
                   ),
                   validator: (v) {
                     if (v == null || v.trim().isEmpty) return 'Please enter your email';
@@ -103,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: _onContinue,
                         child: const Text('Continue'),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: AppSpacing.xl),
               ],
             ),
           ),

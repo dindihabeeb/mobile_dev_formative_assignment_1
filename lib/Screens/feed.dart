@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_typography.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: AppColors.background,
       body: Center(
         child: Text(
           'Feed',
-          style: TextStyle(color: Colors.white54, fontSize: 20),
+          style: AppTypography.headlineMedium.copyWith(color: AppColors.textMuted),
         ),
       ),
     );

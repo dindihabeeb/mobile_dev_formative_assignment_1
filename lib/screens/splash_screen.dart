@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
 import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -27,25 +30,21 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.hub_rounded, size: 64, color: Color(0xFF6C63FF)),
-            SizedBox(height: 16),
+            const Icon(Icons.hub_rounded, size: 64, color: AppColors.accent),
+            const SizedBox(height: AppSpacing.md),
             Text(
               'ALU Connect',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
+              style: AppTypography.displayLarge.copyWith(color: AppColors.textPrimary),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(
               'Where ALU Kigali comes together',
-              style: TextStyle(color: Color(0xFF9090A0), fontSize: 14),
+              style: AppTypography.titleMedium.copyWith(color: AppColors.textSecondary),
             ),
           ],
         ),

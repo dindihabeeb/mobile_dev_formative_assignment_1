@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../Widgets/event.dart';
 import '../Widgets/opportunity.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -15,29 +18,24 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0D1B2A),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top bar
               Row(
                 children: [
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: Center(
                       child: Text(
                         'Create Post',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: AppTypography.titleLarge.copyWith(color: AppColors.textPrimary),
                       ),
                     ),
                   ),
@@ -45,14 +43,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 ],
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
 
-              // Toggle tabs
               Container(
-                padding: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(AppSpacing.xs),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A2D3F),
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
                 ),
                 child: Row(
                   children: [
@@ -62,9 +59,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: AppSpacing.lg),
 
-              // Swap form based on selected tab
               if (_selectedTab == 'Event')
                 const PostForm(key: ValueKey('event'), type: 'Event')
               else
@@ -88,15 +84,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFFFFB800) : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
+            color: isSelected ? AppColors.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
           ),
           alignment: Alignment.center,
           child: Text(
             label,
-            style: TextStyle(
-              color: isSelected ? Colors.black : Colors.white,
-              fontWeight: FontWeight.bold,
+            style: AppTypography.labelLarge.copyWith(
+              color: isSelected ? Colors.black : AppColors.textPrimary,
             ),
           ),
         ),

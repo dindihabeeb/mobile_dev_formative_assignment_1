@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../store/event_store.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
 import '../models/event.dart';
 
 class MyEventsScreen extends StatelessWidget {
@@ -16,30 +18,26 @@ class MyEventsScreen extends StatelessWidget {
         final waitlisted = store.waitlisted;
 
         return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.md),
       children: [
-        const Text(
+        Text(
           "My Events",
-          style: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
+          style: AppTypography.headlineLarge.copyWith(color: AppColors.textPrimary),
         ),
-        const SizedBox(height: 16),
-        const Text("Going", style: TextStyle(color: AppColors.textSecondary)),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.md),
+        Text("Going", style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary)),
+        const SizedBox(height: AppSpacing.sm),
         if (myEvents.isEmpty)
           const _EmptyState(message: "No events yet — go RSVP to something!")
         else
           for (final e in myEvents)
-            _EventTile(event: e, status: "GOING", statusColor: AppColors.green),
+            _EventTile(event: e, status: "GOING", statusColor: AppColors.success),
         const SizedBox(height: 20),
-        const Text(
+        Text(
           "Waitlisted",
-          style: TextStyle(color: AppColors.textSecondary),
+          style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         if (waitlisted.isEmpty)
           const _EmptyState(message: "You're not on any waitlists.")
         else
@@ -47,7 +45,7 @@ class MyEventsScreen extends StatelessWidget {
             _EventTile(
               event: e,
               status: "WAITLISTED",
-              statusColor: AppColors.purple,
+              statusColor: AppColors.accent,
             ),
       ],
         );
@@ -82,12 +80,12 @@ class _EventTile extends StatelessWidget {
           Expanded(
             child: Text(
               event.title,
-              style: const TextStyle(color: AppColors.textPrimary),
+              style: AppTypography.bodyLarge.copyWith(color: AppColors.textPrimary),
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(width: 8),
-          Text(status, style: TextStyle(color: statusColor)),
+          const SizedBox(width: AppSpacing.sm),
+          Text(status, style: AppTypography.labelLarge.copyWith(color: statusColor)),
         ],
       ),
     );
@@ -101,10 +99,10 @@ class _EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
       child: Text(
         message,
-        style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+        style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
       ),
     );
   }

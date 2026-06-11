@@ -77,7 +77,7 @@ class PostCard extends StatelessWidget {
                       ),
                     ),
 
-                // ✦ For you badge
+                //For you badge
                 Positioned(
                   top: 10,
                   left: 10,
